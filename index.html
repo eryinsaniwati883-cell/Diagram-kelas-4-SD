@@ -1,0 +1,2583 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Dunia Diagram - Matematika Kelas 4 SD</title>
+    <!-- Menggunakan Google Fonts Fredoka & Nunito agar ramah anak dan terbaca jelas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS untuk styling modern dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Fredoka', 'sans-serif'],
+                        body: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        skykid: '#38BDF8',
+                        sunyellow: '#FACC15',
+                        leafgreen: '#4ADE80',
+                        funorange: '#FB923C',
+                        softbg: '#F0F9FF'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Gaya Kustom untuk Animasi, Tombol 3D Anak-Anak, dan Print LKPD */
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #E0F2FE;
+            background-image: radial-gradient(#BAE6FD 2px, transparent 2px);
+            background-size: 28px 28px;
+            overflow-x: hidden;
+            user-select: none;
+        }
+        input, textarea, select {
+            user-select: text;
+        }
+        h1, h2, h3, h4, .font-display {
+            font-family: 'Fredoka', sans-serif;
+        }
+        /* Tombol 3D Ceria */
+        .btn-3d {
+            transition: all 0.15s ease;
+            box-shadow: 0 5px 0 rgba(0, 0, 0, 0.18);
+        }
+        .btn-3d:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 rgba(0, 0, 0, 0.18);
+        }
+        .btn-3d:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+        }
+        /* Animasi Karakter & Elemen */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        /* Animasi Batang Diagram Tumbuh */
+        .bar-grow {
+            transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E0F2FE;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #38BDF8;
+            border-radius: 10px;
+        }
+        /* Mode Cetak Khusus LKPD */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #lkpd-printable, #lkpd-printable * {
+                visibility: visible;
+            }
+            #lkpd-printable {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 10px !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col">
+
+    <!-- =====================================================================
+         MODAL PETUNJUK PENGGUNAAN & PESAN NOTIFIKASI (PENGGANTI ALERT)
+    ====================================================================== -->
+    <div id="guide-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 md:p-8 border-4 border-sky-400 shadow-2xl animate-pop max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b-2 border-sky-100 pb-4 mb-4">
+                <div class="flex items-center gap-3">
+                    <span class="text-4xl">🧭</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-sky-600">Petunjuk Penggunaan</h2>
+                </div>
+                <button onclick="closeModal('guide-modal')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 font-bold w-10 h-10 rounded-full text-xl flex items-center justify-center">✕</button>
+            </div>
+            <div class="space-y-3 text-base md:text-lg text-slate-700 leading-relaxed">
+                <p>Halo! Aku <strong>Didi si Ahli Data</strong>. Ikuti langkah ini agar petualangan belajarmu seru:</p>
+                <ul class="space-y-2 bg-sky-50 p-4 rounded-2xl border-2 border-sky-200">
+                    <li>📘 <strong>1. Materi:</strong> Pelajari pengertian diagram, piktogram, dan diagram batang dengan suara pemandu.</li>
+                    <li>📊 <strong>2. Simulasi:</strong> Ubah jumlah data buah dan lihat diagram batang tumbuh secara langsung!</li>
+                    <li>🔍 <strong>3. Praktikum:</strong> Lakukan survei kesukaan teman dan susun tabel serta diagramnya.</li>
+                    <li>🎮 <strong>4. Game Seru:</strong> Mainkan 3 tantangan berwaktu untuk mengumpulkan banyak bintang!</li>
+                    <li>📝 <strong>5. LKPD Digital:</strong> Kerjakan lembar kerja langsung di layar dan cetak hasilnya.</li>
+                    <li>🏆 <strong>6. Evaluasi:</strong> Uji pemahamanmu dengan 15 soal (Pilihan Ganda & Isian) untuk meraih nilai terbaik!</li>
+                </ul>
+                <p class="text-sm text-slate-500 bg-amber-50 p-3 rounded-xl border border-amber-200">
+                    💡 <strong>Tips Audio:</strong> Gunakan tombol <strong>Speaker / Musik</strong> di pojok kanan atas untuk menghidupkan atau mematikan suara narasi dan musik latar.
+                </p>
+            </div>
+            <div class="mt-6 text-center">
+                <button onclick="playClick(); closeModal('guide-modal')" class="btn-3d bg-sky-500 hover:bg-sky-600 text-white font-display font-bold text-lg px-8 py-3 rounded-2xl">
+                    Siap Mengerti! 👍
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Umpan Balik / Notifikasi Ceria -->
+    <div id="toast-box" class="fixed bottom-5 right-5 z-50 hidden max-w-sm bg-white border-4 border-amber-400 rounded-2xl p-4 shadow-2xl animate-pop">
+        <div class="flex items-start gap-3">
+            <div id="toast-icon" class="text-3xl">🌟</div>
+            <div>
+                <h4 id="toast-title" class="font-display font-bold text-lg text-slate-800">Hebat!</h4>
+                <p id="toast-msg" class="text-sm text-slate-600 font-semibold">Kamu mendapatkan bintang baru!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================================
+         HALAMAN PEMBUKA (WELCOME / SPLASH SCREEN)
+    ====================================================================== -->
+    <section id="welcome-screen" class="flex-1 flex items-center justify-center p-4 md:p-8 min-h-screen">
+        <div class="max-w-5xl w-full bg-white/95 backdrop-blur rounded-[2.5rem] border-8 border-sky-400 shadow-2xl p-6 md:p-10 relative overflow-hidden">
+            <!-- Dekorasi Latar -->
+            <div class="absolute -top-10 -left-10 w-40 h-40 bg-yellow-300/40 rounded-full blur-xl"></div>
+            <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-emerald-300/40 rounded-full blur-xl"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                <!-- Kolom Kiri: Judul & Tombol Mulai -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-5">
+                    <div class="inline-flex items-center gap-2 bg-amber-100 border-2 border-amber-400 text-amber-800 px-4 py-1.5 rounded-full font-bold text-sm md:text-base">
+                        <span>🎓 Matematika Kelas IV SD</span>
+                        <span>•</span>
+                        <span>Materi: Diagram</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-sky-600 leading-tight drop-shadow-sm">
+                        PETUALANGAN <br>
+                        <span class="text-orange-500">DUNIA DIAGRAM</span>
+                    </h1>
+
+                    <p class="text-xl md:text-2xl font-display font-semibold text-emerald-600">
+                        Belajar Matematika Jadi Menyenangkan! 🚀
+                    </p>
+
+                    <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-4 text-left flex items-center gap-4">
+                        <div class="bg-sky-500 text-white w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 font-bold">
+                            👩‍🏫
+                        </div>
+                        <div>
+                            <p class="text-xs uppercase tracking-wider font-bold text-sky-600">Pengembang Media Pembelajaran</p>
+                            <p class="font-bold text-slate-800 text-base md:text-lg">Ery Insaniwati, S.Pd.</p>
+                            <p class="text-sm font-semibold text-slate-600">SDN 2 Padan</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <button onclick="startApp()" class="btn-3d w-full sm:w-auto bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-display font-bold text-2xl px-10 py-4 rounded-3xl flex items-center justify-center gap-3 shadow-lg">
+                            <span>▶ MULAI BELAJAR</span>
+                        </button>
+                        <button onclick="openModal('guide-modal')" class="btn-3d w-full sm:w-auto bg-sky-100 hover:bg-sky-200 text-sky-700 font-display font-bold text-lg px-6 py-4 rounded-3xl flex items-center justify-center gap-2">
+                            <span>❔ Petunjuk</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan: Ilustrasi SVG Karakter Didi si Ahli Data & Diagram -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center">
+                    <div class="relative w-64 h-64 sm:w-80 sm:h-80 animate-float">
+                        <!-- SVG Karakter Kartun Anak SD Didi si Ahli Data -->
+                        <svg viewBox="0 0 300 300" class="w-full h-full drop-shadow-xl">
+                            <!-- Lingkaran Latar -->
+                            <circle cx="150" cy="150" r="135" fill="#FEF08A" stroke="#38BDF8" stroke-width="8"/>
+                            <!-- Papan Diagram Mini di Samping -->
+                            <rect x="180" y="65" width="95" height="75" rx="12" fill="#FFFFFF" stroke="#0284C7" stroke-width="4"/>
+                            <rect x="195" y="105" width="14" height="25" rx="3" fill="#FB923C"/>
+                            <rect x="218" y="88" width="14" height="42" rx="3" fill="#4ADE80"/>
+                            <rect x="241" y="78" width="14" height="52" rx="3" fill="#38BDF8"/>
+                            <!-- Badan Seragam Merah Putih SD -->
+                            <path d="M85 265 C85 210, 195 210, 195 265 Z" fill="#EF4444"/>
+                            <path d="M105 215 L175 215 L165 255 L115 255 Z" fill="#FFFFFF"/>
+                            <!-- Dasi Merah -->
+                            <polygon points="140,218 134,232 140,252 146,232" fill="#DC2626"/>
+                            <!-- Kepala -->
+                            <circle cx="140" cy="145" r="55" fill="#FDE68A"/>
+                            <!-- Rambut Ceria -->
+                            <path d="M85 135 C85 80, 195 80, 195 135 C185 105, 155 100, 140 112 C125 98, 95 105, 85 135 Z" fill="#1E293B"/>
+                            <!-- Topi SD Merah Putih -->
+                            <path d="M92 108 C100 72, 180 72, 188 108 Z" fill="#DC2626"/>
+                            <path d="M82 108 L198 108 C198 116, 82 116, 82 108 Z" fill="#B91C1C"/>
+                            <rect x="128" y="84" width="24" height="14" rx="3" fill="#FFFFFF"/>
+                            <!-- Mata & Kacamata Pintar -->
+                            <circle cx="120" cy="145" r="14" fill="#FFFFFF" stroke="#0284C7" stroke-width="4"/>
+                            <circle cx="160" cy="145" r="14" fill="#FFFFFF" stroke="#0284C7" stroke-width="4"/>
+                            <line x1="134" y1="145" x2="146" y2="145" stroke="#0284C7" stroke-width="4"/>
+                            <circle cx="122" cy="145" r="5" fill="#0F172A"/>
+                            <circle cx="162" cy="145" r="5" fill="#0F172A"/>
+                            <circle cx="124" cy="143" r="2" fill="#FFFFFF"/>
+                            <circle cx="164" cy="143" r="2" fill="#FFFFFF"/>
+                            <!-- Pipi Merona & Senyum Lebar -->
+                            <circle cx="105" cy="162" r="7" fill="#FCA5A5" opacity="0.7"/>
+                            <circle cx="175" cy="162" r="7" fill="#FCA5A5" opacity="0.7"/>
+                            <path d="M123 166 Q140 185 157 166" fill="none" stroke="#991B1B" stroke-width="4" stroke-linecap="round"/>
+                            <!-- Tangan Melambai -->
+                            <circle cx="68" cy="195" r="16" fill="#FDE68A"/>
+                            <path d="M75 205 L95 225" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="bg-white border-2 border-amber-400 px-5 py-2 rounded-2xl shadow-md -mt-4 text-center">
+                        <p class="font-display font-bold text-amber-600 text-lg">👦 Didi si Ahli Data</p>
+                        <p class="text-xs font-bold text-slate-500">Pemandu Petualanganmu!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================================================================
+         APLIKASI UTAMA (HEADER, NAVIGASI 7 MENU, KONTEN DINAMIS)
+    ====================================================================== -->
+    <div id="main-app" class="hidden flex-col min-h-screen">
+        
+        <!-- TOP BAR / HEADER NAVIGASI -->
+        <header class="bg-white/95 backdrop-blur sticky top-0 z-40 border-b-4 border-sky-400 shadow-md px-3 py-2.5 md:px-6">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+                <!-- Kiri: Tombol Beranda & Judul Singkat -->
+                <div class="flex items-center gap-2">
+                    <button onclick="goHome()" title="Kembali ke Halaman Pembuka" class="btn-3d bg-amber-400 hover:bg-amber-500 text-slate-900 font-display font-bold px-3.5 py-2 rounded-xl text-sm md:text-base flex items-center gap-1.5">
+                        <span>🏠</span>
+                        <span class="hidden sm:inline">Beranda</span>
+                    </button>
+                    <button onclick="navigatePrev()" title="Menu Sebelumnya" class="btn-3d bg-sky-100 hover:bg-sky-200 text-sky-700 font-bold px-3 py-2 rounded-xl text-sm md:text-base">
+                        ⬅️
+                    </button>
+                    <button onclick="navigateNext()" title="Menu Berikutnya" class="btn-3d bg-sky-100 hover:bg-sky-200 text-sky-700 font-bold px-3 py-2 rounded-xl text-sm md:text-base">
+                        ➡️
+                    </button>
+                    <div class="hidden xl:block ml-2">
+                        <span class="font-display font-bold text-sky-600 text-lg">Petualangan Dunia Diagram</span>
+                    </div>
+                </div>
+
+                <!-- Tengah: Indikator Kemajuan Belajar & Bintang -->
+                <div class="flex items-center gap-2 sm:gap-4 bg-sky-50 px-3 py-1.5 rounded-2xl border-2 border-sky-200">
+                    <!-- Jumlah Bintang -->
+                    <div class="flex items-center gap-1.5 bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">
+                        <span class="text-lg">⭐</span>
+                        <span id="star-count" class="font-display font-bold text-amber-700 text-base md:text-lg">0</span>
+                    </div>
+                    <!-- Progress Bar Belajar -->
+                    <div class="flex flex-col w-24 sm:w-36">
+                        <div class="flex justify-between text-[11px] font-bold text-sky-700 mb-0.5">
+                            <span>Kemajuan</span>
+                            <span id="progress-text">0%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-sky-200 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="h-full bg-emerald-500 transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kanan: Kontrol Audio, Volume & Petunjuk -->
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                    <button onclick="toggleBGM()" id="btn-bgm" title="Musik Latar" class="btn-3d bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-bold px-2.5 py-2 rounded-xl text-sm flex items-center gap-1">
+                        <span>🎵</span>
+                        <span id="bgm-label" class="hidden md:inline">Musik: ON</span>
+                    </button>
+                    <button onclick="toggleMute()" id="btn-mute" title="Suara Efek & Narasi" class="btn-3d bg-orange-100 hover:bg-orange-200 text-orange-700 font-bold px-2.5 py-2 rounded-xl text-sm flex items-center gap-1">
+                        <span id="mute-icon">🔊</span>
+                    </button>
+                    <div class="hidden lg:flex items-center bg-slate-100 px-2 py-1.5 rounded-xl border border-slate-200" title="Atur Volume">
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.1" value="0.7" onchange="updateVolume(this.value)" class="w-16 accent-sky-500 cursor-pointer">
+                    </div>
+                    <button onclick="playClick(); openModal('guide-modal')" title="Petunjuk Penggunaan" class="btn-3d bg-purple-100 hover:bg-purple-200 text-purple-700 font-bold px-3 py-2 rounded-xl text-sm">
+                        ❔
+                    </button>
+                </div>
+            </div>
+
+            <!-- 7 MENU UTAMA -->
+            <nav class="max-w-7xl mx-auto mt-2.5 pt-2 border-t border-sky-100 flex overflow-x-auto gap-2 pb-1 no-scrollbar">
+                <button onclick="switchMenu('materi')" data-menu="materi" class="nav-tab shrink-0 btn-3d px-3.5 py-2 rounded-xl font-display font-bold text-sm md:text-base flex items-center gap-1.5 bg-sky-500 text-white">
+                    <span>📘</span> 1. Materi
+                </button>
+                <button onclick="switchMenu('simulasi')" data-menu="simulasi" class="nav-tab shrink-0 btn-3d px-3.5 py-2 rounded-xl font-display font-bold text-sm md:text-base flex items-center gap-1.5 bg-white text-slate-700 border-2 border-sky-200">
+                    <span>📊</span> 2. Simulasi
+                </button>
+                <button onclick="switchMenu('praktikum')" data-menu="praktikum" class="nav-tab shrink-0 btn-3d px-3.5 py-2 rounded-xl font-display font-bold text-sm md:text-base flex items-center gap-1.5 bg-white text-slate-700 border-2 border-sky-200">
+                    <span>🔍</span> 3. Praktikum
+                </button>
+                <button onclick="switchMenu('game')" data-menu="game" class="nav-tab shrink-0 btn-3d px-3.5 py-2 rounded-xl font-display font-bold text-sm md:text-base flex items-center gap-1.5 bg-white text-slate-700 border-2 border-sky-200">
+                    <span>🎮</span> 4. Game
+                </button>
+                <button onclick="switchMenu('lkpd')" data-menu="lkpd" class="nav-tab shrink-0 btn-3d px-3.5 py-2 rounded-xl font-display font-bold text-sm md:text-base flex items-center gap-1.5 bg-white text-slate-700 border-2 border-sky-200">
+                    <span>📝</span> 5. LKPD
+                </button>
+                <button onclick="switchMenu('evaluasi')" data-menu="evaluasi" class="nav-tab shrink-0 btn-3d px-3.5 py-2 rounded-xl font-display font-bold text-sm md:text-base flex items-center gap-1.5 bg-white text-slate-700 border-2 border-sky-200">
+                    <span>🏆</span> 6. Evaluasi
+                </button>
+                <button onclick="switchMenu('pengembang')" data-menu="pengembang" class="nav-tab shrink-0 btn-3d px-3.5 py-2 rounded-xl font-display font-bold text-sm md:text-base flex items-center gap-1.5 bg-white text-slate-700 border-2 border-sky-200">
+                    <span>👩‍🏫</span> 7. Pengembang
+                </button>
+            </nav>
+        </header>
+
+        <!-- AREA KONTEN UTAMA -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
+
+            <!-- =================================================================
+                 MENU 1: MATERI PEMBELAJARAN INTERAKTIF
+            ================================================================== -->
+            <section id="sec-materi" class="menu-section space-y-6 animate-pop">
+                <!-- Banner Didi Pemandu Materi -->
+                <div class="bg-gradient-to-r from-sky-500 to-blue-600 rounded-3xl p-5 md:p-6 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-yellow-300 text-4xl w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 border-4 border-white shadow">👦</div>
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-display font-bold">Petualangan Belajar Materi Diagram</h2>
+                            <p class="text-sky-100 text-sm md:text-base">Pilih topik di bawah ini, dengarkan penjelasan Didi, dan jawab latihan singkatnya!</p>
+                        </div>
+                    </div>
+                    <button onclick="speakCurrentMateri()" class="btn-3d bg-amber-400 hover:bg-amber-500 text-slate-900 font-display font-bold px-5 py-3 rounded-2xl flex items-center gap-2 shrink-0">
+                        <span>🗣️ Dengarkan Didi</span>
+                    </button>
+                </div>
+
+                <!-- Sub-Menu Topik Materi (5 Bagian) -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+                    <button onclick="selectMateriStep(0)" id="m-tab-0" class="m-tab btn-3d bg-orange-500 text-white font-display font-bold p-3 rounded-2xl text-sm md:text-base text-center">
+                        1️⃣ Apa Itu Diagram?
+                    </button>
+                    <button onclick="selectMateriStep(1)" id="m-tab-1" class="m-tab btn-3d bg-white text-slate-700 border-2 border-sky-200 font-display font-bold p-3 rounded-2xl text-sm md:text-base text-center">
+                        2️⃣ Kumpul & Kelompok Data
+                    </button>
+                    <button onclick="selectMateriStep(2)" id="m-tab-2" class="m-tab btn-3d bg-white text-slate-700 border-2 border-sky-200 font-display font-bold p-3 rounded-2xl text-sm md:text-base text-center">
+                        3️⃣ Bagian-Bagian Diagram
+                    </button>
+                    <button onclick="selectMateriStep(3)" id="m-tab-3" class="m-tab btn-3d bg-white text-slate-700 border-2 border-sky-200 font-display font-bold p-3 rounded-2xl text-sm md:text-base text-center">
+                        4️⃣ Diagram Gambar
+                    </button>
+                    <button onclick="selectMateriStep(4)" id="m-tab-4" class="m-tab btn-3d bg-white text-slate-700 border-2 border-sky-200 font-display font-bold p-3 rounded-2xl text-sm md:text-base text-center col-span-2 sm:col-span-1">
+                        5️⃣ Diagram Batang & Garis
+                    </button>
+                </div>
+
+                <!-- Kontainer Isi Materi Dinamis -->
+                <div id="materi-content-box" class="bg-white rounded-3xl border-4 border-sky-300 p-6 md:p-8 shadow-xl">
+                    <!-- Diisi via JS -->
+                </div>
+            </section>
+
+            <!-- =================================================================
+                 MENU 2: SIMULASI INTERAKTIF BUAH KESUKAAN
+            ================================================================== -->
+            <section id="sec-simulasi" class="menu-section hidden space-y-6 animate-pop">
+                <div class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-3xl p-5 md:p-6 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-display font-bold">📊 Simulasi Interaktif: Buah Kesukaan Siswa</h2>
+                        <p class="text-emerald-100 text-sm md:text-base">Tekan tombol <strong>(+)</strong> atau <strong>(-)</strong> pada tabel untuk melihat batang diagram tumbuh otomatis!</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="speakText('Ayo ubah jumlah siswa yang menyukai buah menggunakan tombol tambah dan kurang, lalu perhatikan perubahan tinggi batang diagramnya!')" class="btn-3d bg-amber-400 text-slate-900 font-display font-bold px-4 py-2.5 rounded-2xl text-sm">
+                            🗣️ Panduan
+                        </button>
+                        <button onclick="resetSimulasi()" class="btn-3d bg-white text-emerald-700 font-display font-bold px-4 py-2.5 rounded-2xl text-sm">
+                            🔄 Reset Data Awal
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Kolom Kiri: Tabel Kontrol Data -->
+                    <div class="lg:col-span-5 bg-white rounded-3xl border-4 border-emerald-300 p-5 shadow-lg space-y-4">
+                        <h3 class="text-xl font-display font-bold text-emerald-700 flex items-center gap-2">
+                            <span>📋 Tabel Data Buah Kesukaan</span>
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-emerald-100 text-emerald-900 font-display">
+                                        <th class="p-3 rounded-tl-xl">Jenis Buah</th>
+                                        <th class="p-3 text-center">Jumlah Siswa</th>
+                                        <th class="p-3 rounded-tr-xl text-center">Ubah Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sim-table-body" class="divide-y divide-emerald-100 font-bold">
+                                    <!-- Diisi JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 flex justify-between items-center">
+                            <span class="font-bold text-amber-900">Total Seluruh Siswa:</span>
+                            <span id="sim-total-display" class="font-display font-bold text-2xl text-orange-600">26 Siswa</span>
+                        </div>
+                    </div>
+
+                    <!-- Kolom Kanan: Visualisasi Diagram Batang Dinamis -->
+                    <div class="lg:col-span-7 bg-white rounded-3xl border-4 border-sky-300 p-5 shadow-lg flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-display font-bold text-center text-sky-700 mb-1">Diagram Batang Buah Kesukaan Siswa Kelas IV</h3>
+                            <p class="text-xs text-center text-slate-500 mb-4">Sumbu Tegak: Banyak Siswa (0 - 12) | Sumbu Mendatar: Jenis Buah</p>
+                        </div>
+
+                        <!-- Grafik Batang CSS/HTML Animasi -->
+                        <div class="relative h-72 border-l-4 border-b-4 border-slate-700 ml-8 mr-4 mb-8 mt-4 flex items-end justify-around px-2 pt-4 bg-sky-50/50 rounded-tr-2xl">
+                            <!-- Garis Skala Y -->
+                            <div class="absolute -left-9 inset-y-0 flex flex-col justify-between text-xs font-bold text-slate-600 py-0">
+                                <span>12</span>
+                                <span>9</span>
+                                <span>6</span>
+                                <span>3</span>
+                                <span>0</span>
+                            </div>
+                            <!-- Grid Horizontal -->
+                            <div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                                <div class="border-b border-dashed border-slate-300 w-full"></div>
+                                <div class="border-b border-dashed border-slate-300 w-full"></div>
+                                <div class="border-b border-dashed border-slate-300 w-full"></div>
+                                <div class="border-b border-dashed border-slate-300 w-full"></div>
+                                <div></div>
+                            </div>
+
+                            <!-- Batang Buah (Diisi JS) -->
+                            <div id="sim-chart-bars" class="w-full h-full flex items-end justify-around z-10"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pertanyaan Interaktif Berdasarkan Data Simulasi Saat Ini -->
+                <div class="bg-white rounded-3xl border-4 border-amber-300 p-6 shadow-lg">
+                    <h3 class="text-xl font-display font-bold text-amber-700 mb-2">🧠 Tantangan Analisis Data Simulasi</h3>
+                    <p class="text-sm text-slate-600 mb-4">Jawab pertanyaan berikut sesuai dengan data pada diagram di atas!</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="sim-questions-container">
+                        <!-- Diisi JS -->
+                    </div>
+                    <div class="mt-5 flex flex-wrap items-center gap-4">
+                        <button onclick="checkSimulasiAnswers()" class="btn-3d bg-orange-500 hover:bg-orange-600 text-white font-display font-bold px-6 py-3 rounded-2xl">
+                            ✅ Periksa Jawaban Simulasi
+                        </button>
+                        <div id="sim-feedback" class="font-bold text-base"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================
+                 MENU 3: PRAKTIKUM SEDERHANA (SURVEI KESUKAAN TEMAN-TEMANKU)
+            ================================================================== -->
+            <section id="sec-praktikum" class="menu-section hidden space-y-6 animate-pop">
+                <div class="bg-gradient-to-r from-orange-400 to-amber-500 rounded-3xl p-5 md:p-6 text-white shadow-lg">
+                    <h2 class="text-2xl md:text-3xl font-display font-bold">🔍 Praktikum Sederhana: SURVEI KESUKAAN TEMAN-TEMANKU</h2>
+                    <p class="text-amber-50 text-sm md:text-base mt-1">Jadilah peneliti cilik! Kumpulkan data dari 10 temanmu, catat di tabel, dan lihat diagrammu terbentuk otomatis!</p>
+                </div>
+
+                <!-- Alat Bahan & Langkah Kerja -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-3xl border-4 border-amber-300 p-5 shadow-md">
+                        <h3 class="text-xl font-display font-bold text-amber-700 mb-3">🎒 Alat dan Bahan</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 flex items-center gap-3">
+                                <span class="text-3xl">📄</span>
+                                <span class="font-bold text-slate-700">Kertas Catatan</span>
+                            </div>
+                            <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 flex items-center gap-3">
+                                <span class="text-3xl">✏️</span>
+                                <span class="font-bold text-slate-700">Pensil / Pulpen</span>
+                            </div>
+                            <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 flex items-center gap-3">
+                                <span class="text-3xl">📏</span>
+                                <span class="font-bold text-slate-700">Penggaris</span>
+                            </div>
+                            <div class="bg-amber-50 p-3 rounded-2xl border border-amber-200 flex items-center gap-3">
+                                <span class="text-3xl">🌟</span>
+                                <span class="font-bold text-slate-700">Stiker Warna</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl border-4 border-sky-300 p-5 shadow-md">
+                        <h3 class="text-xl font-display font-bold text-sky-700 mb-3">👣 Panduan Langkah demi Langkah</h3>
+                        <ol class="list-decimal list-inside space-y-1.5 text-sm md:text-base font-semibold text-slate-700">
+                            <li><strong>Pilih Topik Survei</strong> (Hewan Peliharaan, Alat Sekolah, atau Mainan).</li>
+                            <li><strong>Bertanya kepada 10 Teman</strong> tentang pilihan kesukaan mereka.</li>
+                            <li><strong>Mencatat Jawaban</strong> dan menghitung jumlah setiap pilihan.</li>
+                            <li><strong>Mengisi Tabel Data</strong> di bawah ini (Total harus 10 teman).</li>
+                            <li><strong>Menyusun Diagram Batang</strong> & menuliskan kesimpulan survei.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Langkah 1: Pilih Topik -->
+                <div class="bg-white rounded-3xl border-4 border-emerald-300 p-6 shadow-lg space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-emerald-100 pb-4">
+                        <div>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">LANGKAH 1</span>
+                            <h3 class="text-xl font-display font-bold text-emerald-700 mt-1">Pilih Topik Surveimu:</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="setPraktikumTopic('hewan')" id="ptopic-hewan" class="ptopic-btn btn-3d bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-sm">🐾 Hewan Kesukaan</button>
+                            <button onclick="setPraktikumTopic('sekolah')" id="ptopic-sekolah" class="ptopic-btn btn-3d bg-white text-slate-700 border-2 border-emerald-200 font-bold px-4 py-2 rounded-xl text-sm">🎒 Alat Sekolah</button>
+                            <button onclick="setPraktikumTopic('mainan')" id="ptopic-mainan" class="ptopic-btn btn-3d bg-white text-slate-700 border-2 border-emerald-200 font-bold px-4 py-2 rounded-xl text-sm">🧸 Mainan Favorit</button>
+                        </div>
+                    </div>
+
+                    <!-- Langkah 2 & 3: Tabel Isian & Diagram Otomatis -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <div class="lg:col-span-5 space-y-3">
+                            <span class="bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">LANGKAH 2: ISI TABEL (TOTAL 10 TEMAN)</span>
+                            <table class="w-full border-collapse">
+                                <thead>
+                                    <tr class="bg-sky-100 text-sky-900 font-display">
+                                        <th class="p-3 text-left rounded-tl-xl">Pilihan</th>
+                                        <th class="p-3 text-center">Jumlah Teman</th>
+                                        <th class="p-3 text-center rounded-tr-xl">Stiker Warna</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="praktikum-table-body" class="divide-y divide-sky-100">
+                                    <!-- Diisi JS -->
+                                </tbody>
+                            </table>
+                            <div class="flex items-center justify-between bg-slate-100 p-3 rounded-2xl">
+                                <span class="font-bold text-slate-700">Jumlah Teman Terdata:</span>
+                                <span id="praktikum-total-teman" class="font-display font-bold text-xl text-sky-600">0 / 10 Teman</span>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-7 bg-sky-50/70 rounded-2xl p-4 border-2 border-sky-200 flex flex-col justify-between">
+                            <div>
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">LANGKAH 3: DIAGRAM BATANG OTOMATIS</span>
+                                <h4 id="praktikum-chart-title" class="font-display font-bold text-lg text-center text-sky-800 mt-2">Diagram Survei Hewan Kesukaan Teman</h4>
+                            </div>
+                            <div class="relative h-64 border-l-4 border-b-4 border-slate-700 ml-8 mr-4 mb-6 mt-4 flex items-end justify-around px-2 pt-2 bg-white rounded-tr-xl">
+                                <div class="absolute -left-8 inset-y-0 flex flex-col justify-between text-xs font-bold text-slate-500">
+                                    <span>10</span>
+                                    <span>5</span>
+                                    <span>0</span>
+                                </div>
+                                <div id="praktikum-chart-bars" class="w-full h-full flex items-end justify-around"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Langkah 4: Kesimpulan & Tombol Periksa -->
+                    <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-5 space-y-3">
+                        <span class="bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full">LANGKAH 4: TULIS KESIMPULAN</span>
+                        <label class="block font-bold text-slate-800">Tuliskan kesimpulan dari hasil survei teman-temanmu (Contoh: Pilihan yang paling banyak disukai adalah...):</label>
+                        <textarea id="praktikum-kesimpulan" rows="2" placeholder="Ketik kesimpulan surveimu di sini..." class="w-full p-3 rounded-xl border-2 border-amber-300 focus:border-orange-500 focus:outline-none font-semibold"></textarea>
+                        <div class="flex flex-wrap items-center gap-4 pt-2">
+                            <button onclick="checkPraktikum()" class="btn-3d bg-emerald-500 hover:bg-emerald-600 text-white font-display font-bold px-6 py-3 rounded-2xl">
+                                ✅ Periksa Hasil Praktikum
+                            </button>
+                            <div id="praktikum-feedback" class="font-bold text-base"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================
+                 MENU 4: GAME INTERAKTIF (3 MINI GAMES)
+            ================================================================== -->
+            <section id="sec-game" class="menu-section hidden space-y-6 animate-pop">
+                <div class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-3xl p-5 md:p-6 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-display font-bold">🎮 Arena Game Petualangan Diagram</h2>
+                        <p class="text-purple-100 text-sm md:text-base">Pilih salah satu dari 3 tantangan seru di bawah ini! Setiap soal berwaktu 30 detik.</p>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur px-4 py-2 rounded-2xl text-center">
+                        <span class="text-xs uppercase font-bold block">Total Skor Game</span>
+                        <span id="total-game-score" class="font-display font-bold text-2xl text-yellow-300">0 Poin</span>
+                    </div>
+                </div>
+
+                <!-- Pilihan 3 Game -->
+                <div id="game-lobby" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Game 1 -->
+                    <div class="bg-white rounded-3xl border-4 border-sky-300 p-6 shadow-xl flex flex-col justify-between text-center hover:border-sky-500 transition">
+                        <div class="space-y-3">
+                            <div class="w-20 h-20 bg-sky-100 text-5xl rounded-3xl flex items-center justify-center mx-auto">🧐</div>
+                            <h3 class="text-2xl font-display font-bold text-sky-600">GAME 1: TEBAK DIAGRAM</h3>
+                            <p class="text-slate-600 text-sm font-semibold">Amati gambar diagram dengan teliti dan pilih jawaban yang paling tepat dalam 5 tantangan!</p>
+                        </div>
+                        <button onclick="startGame(1)" class="btn-3d mt-6 w-full bg-sky-500 hover:bg-sky-600 text-white font-display font-bold py-3.5 rounded-2xl text-lg">
+                            ▶ Mainkan Game 1
+                        </button>
+                    </div>
+
+                    <!-- Game 2 -->
+                    <div class="bg-white rounded-3xl border-4 border-emerald-300 p-6 shadow-xl flex flex-col justify-between text-center hover:border-emerald-500 transition">
+                        <div class="space-y-3">
+                            <div class="w-20 h-20 bg-emerald-100 text-5xl rounded-3xl flex items-center justify-center mx-auto">🏗️</div>
+                            <h3 class="text-2xl font-display font-bold text-emerald-600">GAME 2: SUSUN BATANG</h3>
+                            <p class="text-slate-600 text-sm font-semibold">Atur tinggi setiap batang diagram agar sesuai dengan tabel data yang diminta!</p>
+                        </div>
+                        <button onclick="startGame(2)" class="btn-3d mt-6 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-display font-bold py-3.5 rounded-2xl text-lg">
+                            ▶ Mainkan Game 2
+                        </button>
+                    </div>
+
+                    <!-- Game 3 -->
+                    <div class="bg-white rounded-3xl border-4 border-orange-300 p-6 shadow-xl flex flex-col justify-between text-center hover:border-orange-500 transition">
+                        <div class="space-y-3">
+                            <div class="w-20 h-20 bg-orange-100 text-5xl rounded-3xl flex items-center justify-center mx-auto">🕵️</div>
+                            <h3 class="text-2xl font-display font-bold text-orange-600">GAME 3: DETEKTIF DATA</h3>
+                            <p class="text-slate-600 text-sm font-semibold">Temukan data terbanyak, tersedikit, jumlah seluruhnya, dan selisih data secepat kilat!</p>
+                        </div>
+                        <button onclick="startGame(3)" class="btn-3d mt-6 w-full bg-orange-500 hover:bg-orange-600 text-white font-display font-bold py-3.5 rounded-2xl text-lg">
+                            ▶ Mainkan Game 3
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Arena Bermain Game Aktif -->
+                <div id="game-arena" class="hidden bg-white rounded-3xl border-4 border-purple-400 p-6 md:p-8 shadow-2xl space-y-6">
+                    <!-- Header Arena Game -->
+                    <div class="flex flex-wrap items-center justify-between gap-4 border-b-2 border-purple-100 pb-4">
+                        <div class="flex items-center gap-3">
+                            <button onclick="exitGame()" class="btn-3d bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-4 py-2 rounded-xl text-sm">
+                                ⬅️ Pilih Game Lain
+                            </button>
+                            <h3 id="active-game-title" class="text-xl md:text-2xl font-display font-bold text-purple-700">Game 1: Tebak Diagram</h3>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="bg-purple-100 text-purple-800 font-bold px-3.5 py-1.5 rounded-xl text-sm">
+                                Tantangan: <span id="game-q-num">1</span>/5
+                            </span>
+                            <span class="bg-amber-100 text-amber-800 font-bold px-3.5 py-1.5 rounded-xl text-sm">
+                                Skor: <span id="game-current-score">0</span>
+                            </span>
+                            <span id="game-timer-badge" class="bg-rose-100 text-rose-700 font-display font-bold px-4 py-1.5 rounded-xl text-base">
+                                ⏱️ 30d
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Konten Tantangan Game -->
+                    <div id="game-stage-content" class="min-h-[280px]">
+                        <!-- Diisi Dinamis oleh JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================
+                 MENU 5: LKPD DIGITAL (LEMBAR KERJA PESERTA DIDIK)
+            ================================================================== -->
+            <section id="sec-lkpd" class="menu-section hidden space-y-6 animate-pop">
+                <div class="no-print bg-gradient-to-r from-cyan-500 to-sky-600 rounded-3xl p-5 md:p-6 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-display font-bold">📝 LKPD Digital Matematika Kelas IV</h2>
+                        <p class="text-sky-100 text-sm md:text-base">Lengkapi identitasmu, kerjakan kegiatan di bawah ini, periksa jawaban, dan cetak LKPD!</p>
+                    </div>
+                    <button onclick="printLKPD()" class="btn-3d bg-amber-400 hover:bg-amber-500 text-slate-900 font-display font-bold px-5 py-3 rounded-2xl flex items-center gap-2 shrink-0">
+                        <span>🖨️ Cetak / Simpan PDF LKPD</span>
+                    </button>
+                </div>
+
+                <!-- Area Dokumen LKPD (Siap Cetak) -->
+                <div id="lkpd-printable" class="bg-white rounded-3xl border-4 border-sky-300 p-6 md:p-8 shadow-xl space-y-6">
+                    <!-- Kop LKPD -->
+                    <div class="border-b-4 border-double border-sky-400 pb-4 text-center">
+                        <h3 class="text-2xl font-display font-bold text-sky-800">LEMBAR KERJA PESERTA DIDIK (LKPD)</h3>
+                        <p class="font-bold text-slate-600">Mata Pelajaran: Matematika | Kelas: IV SD | Materi: Penyajian Data & Diagram</p>
+                        <p class="text-xs text-slate-500">SDN 2 Padan • Pengembang: Ery Insaniwati, S.Pd.</p>
+                    </div>
+
+                    <!-- Identitas Siswa -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-sky-50 p-4 rounded-2xl border-2 border-sky-200">
+                        <div>
+                            <label class="block text-xs font-bold text-sky-800 uppercase mb-1">Nama Lengkap Siswa:</label>
+                            <input type="text" id="lkpd-nama" placeholder="Ketik namamu..." class="w-full p-2.5 rounded-xl border-2 border-sky-300 font-bold bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-sky-800 uppercase mb-1">Kelas / No. Absen:</label>
+                            <input type="text" id="lkpd-kelas" value="IV (Empat)" class="w-full p-2.5 rounded-xl border-2 border-sky-300 font-bold bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-sky-800 uppercase mb-1">Tanggal Pengerjaan:</label>
+                            <input type="date" id="lkpd-tanggal" class="w-full p-2.5 rounded-xl border-2 border-sky-300 font-bold bg-white">
+                        </div>
+                    </div>
+
+                    <!-- Petunjuk Pengerjaan -->
+                    <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-2xl text-sm font-semibold text-slate-700">
+                        <strong>Petunjuk Pengerjaan:</strong> Bacalah cerita data di bawah ini dengan cermat. Lengkapilah tabel frekuensi, susun diagram batangnya dengan menekan tombol atur tinggi batang, jawab pertanyaan analisis, dan tuliskan kesimpulanmu sendiri!
+                    </div>
+
+                    <!-- Kegiatan 1: Mengamati Data & Melengkapi Tabel -->
+                    <div class="space-y-3">
+                        <h4 class="font-display font-bold text-lg text-sky-700">Kegiatan 1: Mengamati Data dan Melengkapi Tabel</h4>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-base leading-relaxed">
+                            Ibu Guru mendata <strong>alat tulis yang dibawa siswa kelas IV</strong> pada hari Senin. Hasil pendataan tersebut adalah sebagai berikut:
+                            <div class="mt-2 p-3 bg-white rounded-xl border border-sky-200 font-bold text-sky-900">
+                                ✏️ Pensil = 9 buah &nbsp;|&nbsp; 🖊️ Pulpen = 6 buah &nbsp;|&nbsp; 📏 Penggaris = 4 buah &nbsp;|&nbsp; 🧽 Penghapus = 7 buah
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto max-w-xl">
+                            <table class="w-full border-collapse border-2 border-sky-300">
+                                <thead>
+                                    <tr class="bg-sky-200 text-sky-950 font-display">
+                                        <th class="border border-sky-300 p-2.5 text-left">Jenis Alat Tulis</th>
+                                        <th class="border border-sky-300 p-2.5 text-center">Banyak Alat Tulis (Isi Angka)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-sky-300 p-2.5 font-bold">✏️ Pensil</td>
+                                        <td class="border border-sky-300 p-2 text-center"><input type="number" id="lkpd-t-pensil" min="0" max="15" class="w-24 p-1.5 text-center border-2 border-sky-300 rounded-lg font-bold"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-sky-300 p-2.5 font-bold">🖊️ Pulpen</td>
+                                        <td class="border border-sky-300 p-2 text-center"><input type="number" id="lkpd-t-pulpen" min="0" max="15" class="w-24 p-1.5 text-center border-2 border-sky-300 rounded-lg font-bold"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-sky-300 p-2.5 font-bold">📏 Penggaris</td>
+                                        <td class="border border-sky-300 p-2 text-center"><input type="number" id="lkpd-t-penggaris" min="0" max="15" class="w-24 p-1.5 text-center border-2 border-sky-300 rounded-lg font-bold"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-sky-300 p-2.5 font-bold">🧽 Penghapus</td>
+                                        <td class="border border-sky-300 p-2 text-center"><input type="number" id="lkpd-t-penghapus" min="0" max="15" class="w-24 p-1.5 text-center border-2 border-sky-300 rounded-lg font-bold"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Kegiatan 2: Membuat Diagram Batang -->
+                    <div class="space-y-3">
+                        <h4 class="font-display font-bold text-lg text-sky-700">Kegiatan 2: Menyusun Diagram Batang Alat Tulis</h4>
+                        <p class="text-sm text-slate-600 no-print">Gunakan tombol <strong>(+)</strong> dan <strong>(-)</strong> di bawah setiap kategori untuk mengatur tinggi batang sesuai data di atas!</p>
+                        
+                        <div class="bg-sky-50/70 p-4 rounded-2xl border-2 border-sky-200 max-w-2xl">
+                            <p class="font-display font-bold text-center text-sky-900 mb-2">Diagram Batang Alat Tulis Siswa Kelas IV</p>
+                            <div class="relative h-60 border-l-4 border-b-4 border-slate-700 ml-8 mr-4 mb-4 mt-4 flex items-end justify-around px-2 bg-white">
+                                <div class="absolute -left-8 inset-y-0 flex flex-col justify-between text-xs font-bold text-slate-500">
+                                    <span>10</span>
+                                    <span>5</span>
+                                    <span>0</span>
+                                </div>
+                                <div id="lkpd-bars-container" class="w-full h-full flex items-end justify-around"></div>
+                            </div>
+                            <!-- Kontrol Batang LKPD -->
+                            <div id="lkpd-bar-controls" class="no-print grid grid-cols-4 gap-2 ml-8 mr-4 text-center"></div>
+                        </div>
+                    </div>
+
+                    <!-- Kegiatan 3: Menjawab Pertanyaan & Kesimpulan -->
+                    <div class="space-y-4">
+                        <h4 class="font-display font-bold text-lg text-sky-700">Kegiatan 3: Menjawab Pertanyaan & Membuat Kesimpulan</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold text-sm text-slate-700 mb-1">1. Alat tulis apa yang jumlahnya paling banyak?</label>
+                                <input type="text" id="lkpd-q1" placeholder="Jawabanmu..." class="w-full p-2.5 rounded-xl border-2 border-sky-200 font-semibold">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-sm text-slate-700 mb-1">2. Alat tulis apa yang jumlahnya paling sedikit?</label>
+                                <input type="text" id="lkpd-q2" placeholder="Jawabanmu..." class="w-full p-2.5 rounded-xl border-2 border-sky-200 font-semibold">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-sm text-slate-700 mb-1">3. Berapa jumlah seluruh alat tulis yang didata?</label>
+                                <input type="number" id="lkpd-q3" placeholder="Angka..." class="w-full p-2.5 rounded-xl border-2 border-sky-200 font-semibold">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-sm text-slate-700 mb-1">4. Berapa selisih banyak pensil dan penggaris?</label>
+                                <input type="number" id="lkpd-q4" placeholder="Angka..." class="w-full p-2.5 rounded-xl border-2 border-sky-200 font-semibold">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-sm text-slate-700 mb-1">5. Kesimpulan (Tuliskan pendapatmu tentang manfaat diagram atau isi data di atas):</label>
+                            <textarea id="lkpd-kesimpulan" rows="2" placeholder="Menurut saya, data di atas menunjukkan bahwa..." class="w-full p-3 rounded-xl border-2 border-sky-200 font-semibold"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Periksa & Hasil Penilaian LKPD -->
+                    <div class="no-print pt-3 border-t-2 border-sky-100 flex flex-wrap items-center justify-between gap-4">
+                        <button onclick="checkLKPD()" class="btn-3d bg-emerald-500 hover:bg-emerald-600 text-white font-display font-bold px-7 py-3.5 rounded-2xl text-lg">
+                            ✅ Periksa Jawaban LKPD
+                        </button>
+                        <div id="lkpd-result-box" class="hidden bg-amber-50 border-2 border-amber-400 px-5 py-3 rounded-2xl font-bold text-slate-800"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================
+                 MENU 6: EVALUASI PEMBELAJARAN (10 PG + 5 ISIAN SINGKAT)
+            ================================================================== -->
+            <section id="sec-evaluasi" class="menu-section hidden space-y-6 animate-pop">
+                <div class="bg-gradient-to-r from-rose-500 to-orange-500 rounded-3xl p-5 md:p-6 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-display font-bold">🏆 Evaluasi Akhir: Uji Kemampuan Diagram</h2>
+                        <p class="text-rose-100 text-sm md:text-base">10 Soal Pilihan Ganda & 5 Soal Isian Singkat • Waktu 30 detik per soal • Nilai Skala 0 - 100</p>
+                    </div>
+                </div>
+
+                <!-- Layar Awal Evaluasi -->
+                <div id="eval-start-card" class="bg-white rounded-3xl border-4 border-orange-300 p-8 text-center max-w-2xl mx-auto shadow-xl space-y-5">
+                    <div class="text-6xl">🎯</div>
+                    <h3 class="text-3xl font-display font-bold text-slate-800">Siap Mengerjakan Evaluasi?</h3>
+                    <p class="text-slate-600 font-semibold">Soal akan diacak secara otomatis. Kamu memiliki waktu <strong>30 detik</strong> untuk setiap soal. Setelah menjawab, kamu bisa melihat pembahasannya langsung!</p>
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 text-left max-w-md mx-auto space-y-2">
+                        <label class="block text-xs font-bold text-amber-800 uppercase">Masukkan Namamu Sebelum Mulai:</label>
+                        <input type="text" id="eval-student-name" placeholder="Nama Siswa..." class="w-full p-3 rounded-xl border-2 border-amber-300 font-bold">
+                    </div>
+                    <button onclick="startEvaluasi()" class="btn-3d bg-orange-500 hover:bg-orange-600 text-white font-display font-bold text-xl px-10 py-4 rounded-2xl">
+                        🚀 Mulai Evaluasi Sekarang
+                    </button>
+                </div>
+
+                <!-- Layar Pengerjaan Soal Evaluasi -->
+                <div id="eval-quiz-card" class="hidden bg-white rounded-3xl border-4 border-sky-400 p-6 md:p-8 shadow-xl space-y-6">
+                    <!-- Header Soal -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-sky-100 pb-4">
+                        <div class="flex items-center gap-2">
+                            <span id="eval-q-badge" class="bg-sky-500 text-white font-display font-bold px-4 py-1.5 rounded-xl">Soal 1 / 15</span>
+                            <span id="eval-type-badge" class="bg-purple-100 text-purple-700 font-bold px-3 py-1.5 rounded-xl text-xs uppercase">Pilihan Ganda</span>
+                        </div>
+                        <div id="eval-timer" class="bg-rose-100 text-rose-700 font-display font-bold px-4 py-1.5 rounded-xl text-lg">
+                            ⏱️ 30 detik
+                        </div>
+                    </div>
+
+                    <!-- Area Ilustrasi Diagram Soal (Jika Ada) -->
+                    <div id="eval-visual-area" class="hidden bg-sky-50/80 border-2 border-sky-200 rounded-2xl p-4 max-w-xl mx-auto"></div>
+
+                    <!-- Pertanyaan -->
+                    <h3 id="eval-question-text" class="text-xl md:text-2xl font-display font-bold text-slate-800 leading-snug"></h3>
+
+                    <!-- Area Jawaban (Pilihan Ganda atau Isian) -->
+                    <div id="eval-answer-area" class="space-y-3"></div>
+
+                    <!-- Kotak Pembahasan Setelah Menjawab -->
+                    <div id="eval-explanation-box" class="hidden rounded-2xl p-5 border-2 space-y-2 animate-pop">
+                        <h4 id="eval-exp-title" class="font-display font-bold text-lg"></h4>
+                        <p id="eval-exp-text" class="text-sm md:text-base font-semibold"></p>
+                        <div class="pt-2">
+                            <button onclick="nextEvalQuestion()" class="btn-3d bg-sky-600 hover:bg-sky-700 text-white font-display font-bold px-6 py-2.5 rounded-xl">
+                                Lanjut Soal Berikutnya ➡️
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Layar Hasil Akhir Evaluasi -->
+                <div id="eval-result-card" class="hidden bg-white rounded-3xl border-4 border-emerald-400 p-8 text-center max-w-2xl mx-auto shadow-2xl space-y-6 animate-pop">
+                    <div class="text-6xl">🏅</div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-500 uppercase">Hasil Evaluasi Belajar</p>
+                        <h3 id="eval-res-name" class="text-2xl font-display font-bold text-sky-700">Siswa Hebat</h3>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-amber-100 to-yellow-200 border-4 border-amber-400 rounded-3xl p-6 max-w-xs mx-auto">
+                        <span class="text-xs font-bold uppercase text-amber-800">Nilai Akhir Kamu</span>
+                        <div id="eval-final-score" class="text-6xl font-display font-bold text-orange-600 my-1">100</div>
+                        <span id="eval-predikat" class="inline-block bg-emerald-500 text-white font-bold px-4 py-1 rounded-full text-sm">Sangat Baik (A)</span>
+                    </div>
+
+                    <p id="eval-res-summary" class="text-slate-700 font-bold text-base"></p>
+
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button onclick="startEvaluasi()" class="btn-3d bg-orange-500 hover:bg-orange-600 text-white font-display font-bold px-8 py-3.5 rounded-2xl text-lg">
+                            🔄 Ulangi Evaluasi
+                        </button>
+                        <button onclick="switchMenu('materi')" class="btn-3d bg-sky-100 hover:bg-sky-200 text-sky-700 font-display font-bold px-6 py-3.5 rounded-2xl text-lg">
+                            📘 Pelajari Materi Lagi
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================
+                 MENU 7: PENGEMBANG MEDIA PEMBELAJARAN
+            ================================================================== -->
+            <section id="sec-pengembang" class="menu-section hidden animate-pop">
+                <div class="max-w-3xl mx-auto bg-white rounded-[2.5rem] border-8 border-sky-400 p-6 md:p-10 shadow-2xl text-center space-y-6 relative overflow-hidden">
+                    <div class="w-28 h-28 bg-gradient-to-br from-sky-400 to-blue-600 text-white rounded-full flex items-center justify-center text-6xl mx-auto border-4 border-amber-300 shadow-lg">
+                        👩‍🏫
+                    </div>
+
+                    <div class="space-y-2">
+                        <span class="bg-sky-100 text-sky-700 font-bold px-4 py-1.5 rounded-full text-sm">Profil Pengembang MPI</span>
+                        <h2 class="text-3xl md:text-4xl font-display font-bold text-slate-800">Ery Insaniwati, S.Pd.</h2>
+                        <p class="text-xl font-bold text-sky-600">Guru SDN 2 Padan</p>
+                    </div>
+
+                    <div class="bg-sky-50 border-2 border-sky-200 rounded-3xl p-6 space-y-2 max-w-xl mx-auto">
+                        <p class="font-bold text-slate-700 text-lg">Media Pembelajaran Interaktif (MPI)</p>
+                        <p class="text-slate-600 font-semibold">Mata Pelajaran: <strong>Matematika Kelas IV SD</strong></p>
+                        <p class="text-slate-600 font-semibold">Judul Materi: <strong>Diagram (Piktogram & Diagram Batang)</strong></p>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-amber-400 to-orange-400 text-white p-5 rounded-3xl shadow-md max-w-xl mx-auto">
+                        <p class="font-display font-bold text-xl md:text-2xl">
+                            “Belajar Matematika, Menyenangkan dan Bermakna!” ✨
+                        </p>
+                    </div>
+
+                    <div class="pt-2">
+                        <button onclick="switchMenu('materi')" class="btn-3d bg-emerald-500 hover:bg-emerald-600 text-white font-display font-bold px-8 py-3 rounded-2xl">
+                            🚀 Kembali Belajar Bersama Didi
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER RINGKAS -->
+        <footer class="no-print bg-white border-t-2 border-sky-200 py-3 px-4 text-center text-xs md:text-sm font-semibold text-slate-500">
+            Petualangan Dunia Diagram • Matematika Kelas IV SD • Dikembangkan oleh <strong>Ery Insaniwati, S.Pd. (SDN 2 Padan)</strong>
+        </footer>
+    </div>
+
+    <!-- =====================================================================
+         JAVASCRIPT LOGIKA LENGKAP (AUDIO, MATERI, SIMULASI, PRAKTIKUM, GAME, LKPD, EVALUASI)
+    ====================================================================== -->
+    <script>
+        /* =====================================================================
+           1. SISTEM AUDIO (WEB AUDIO API UNTUK EFEK & BGM + WEB SPEECH API NARASI)
+        ====================================================================== */
+        const AudioEngine = {
+            ctx: null,
+            isMuted: false,
+            bgmOn: true,
+            volume: 0.7,
+            bgmInterval: null,
+            noteStep: 0,
+
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioCtx();
+                }
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            },
+
+            playTone(freq, type, duration, volMult = 1, delay = 0) {
+                if (this.isMuted || !this.ctx) return;
+                try {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + delay);
+                    gain.gain.setValueAtTime(this.volume * volMult * 0.25, this.ctx.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + delay + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(this.ctx.currentTime + delay);
+                    osc.stop(this.ctx.currentTime + delay + duration);
+                } catch (e) {}
+            },
+
+            click() {
+                this.init();
+                this.playTone(600, 'sine', 0.08, 0.8);
+                this.playTone(850, 'sine', 0.08, 0.6, 0.04);
+            },
+
+            correct() {
+                this.init();
+                // Melodi ceria + simulasi tepuk tangan riuh
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((n, idx) => this.playTone(n, 'triangle', 0.18, 1, idx * 0.08));
+                // Efek tepuk tangan menggunakan white noise burst
+                if (!this.isMuted && this.ctx) {
+                    for (let i = 0; i < 6; i++) {
+                        this.playClap(i * 0.11);
+                    }
+                }
+            },
+
+            playClap(delay) {
+                const bufferSize = this.ctx.sampleRate * 0.08;
+                const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = this.ctx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 1200;
+                const gain = this.ctx.createGain();
+                gain.gain.setValueAtTime(this.volume * 0.35, this.ctx.currentTime + delay);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + delay + 0.08);
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+                noise.start(this.ctx.currentTime + delay);
+            },
+
+            wrong() {
+                this.init();
+                // Suara boing lucu turun nada
+                this.playTone(320, 'sawtooth', 0.18, 0.7, 0);
+                this.playTone(230, 'sawtooth', 0.28, 0.7, 0.14);
+            },
+
+            timeout() {
+                this.init();
+                this.playTone(440, 'square', 0.15, 0.6, 0);
+                this.playTone(349, 'square', 0.15, 0.6, 0.16);
+                this.playTone(293, 'square', 0.35, 0.6, 0.32);
+            },
+
+            victory() {
+                this.init();
+                const fanfare = [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50];
+                const times = [0, 0.12, 0.24, 0.36, 0.54, 0.68];
+                fanfare.forEach((f, i) => this.playTone(f, 'triangle', 0.25, 1.1, times[i]));
+            },
+
+            startBGM() {
+                this.init();
+                if (this.bgmInterval) clearInterval(this.bgmInterval);
+                // Melodi ceria sederhana anak-anak (C Major Pentatonic)
+                const melody = [523, 587, 659, 523, 659, 784, 659, 0, 587, 659, 784, 880, 784, 659, 523, 0];
+                this.bgmInterval = setInterval(() => {
+                    if (this.bgmOn && !this.isMuted && this.ctx) {
+                        const freq = melody[this.noteStep % melody.length];
+                        if (freq > 0) {
+                            this.playTone(freq, 'sine', 0.22, 0.16);
+                        }
+                        this.noteStep++;
+                    }
+                }, 380);
+            }
+        };
+
+        function playClick() { AudioEngine.click(); }
+
+        function speakText(text) {
+            if (AudioEngine.isMuted || !('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'id-ID';
+            utter.rate = 1.0;
+            utter.pitch = 1.15; // Sedikit ceria ramah anak
+            const voices = window.speechSynthesis.getVoices();
+            const idVoice = voices.find(v => v.lang.includes('id') && (v.name.includes('Female') || v.name.includes('Gadis') || v.name.includes('Damayanti') || v.name.includes('Google')));
+            if (idVoice) utter.voice = idVoice;
+            window.speechSynthesis.speak(utter);
+        }
+
+        function toggleMute() {
+            AudioEngine.isMuted = !AudioEngine.isMuted;
+            if (AudioEngine.isMuted && 'speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            document.getElementById('mute-icon').textContent = AudioEngine.isMuted ? '🔇' : '🔊';
+        }
+
+        function toggleBGM() {
+            AudioEngine.bgmOn = !AudioEngine.bgmOn;
+            document.getElementById('bgm-label').textContent = AudioEngine.bgmOn ? 'Musik: ON' : 'Musik: OFF';
+            playClick();
+        }
+
+        function updateVolume(val) {
+            AudioEngine.volume = parseFloat(val);
+        }
+
+        /* =====================================================================
+           2. STATE APLIKASI, SISTEM BINTANG & KEMAJUAN BELAJAR
+        ====================================================================== */
+        const AppState = {
+            stars: 0,
+            completedSteps: new Set(),
+            currentMenu: 'materi',
+            menuOrder: ['materi', 'simulasi', 'praktikum', 'game', 'lkpd', 'evaluasi', 'pengembang'],
+            totalGameScore: 0
+        };
+
+        function loadProgress() {
+            try {
+                const saved = JSON.parse(localStorage.getItem('mpi_diagram_sdn2padan'));
+                if (saved) {
+                    AppState.stars = saved.stars || 0;
+                    AppState.completedSteps = new Set(saved.completedSteps || []);
+                    AppState.totalGameScore = saved.totalGameScore || 0;
+                }
+            } catch (e) {}
+            updateHeaderStats();
+        }
+
+        function saveProgress() {
+            try {
+                localStorage.setItem('mpi_diagram_sdn2padan', JSON.stringify({
+                    stars: AppState.stars,
+                    completedSteps: Array.from(AppState.completedSteps),
+                    totalGameScore: AppState.totalGameScore
+                }));
+            } catch (e) {}
+            updateHeaderStats();
+        }
+
+        function awardStar(stepId, starAmount = 1, customMsg = 'Kamu mendapatkan bintang prestasi!') {
+            if (!AppState.completedSteps.has(stepId)) {
+                AppState.completedSteps.add(stepId);
+                AppState.stars += starAmount;
+                saveProgress();
+                showToast(`+${starAmount} Bintang Didapatkan!`, customMsg, '⭐');
+            }
+        }
+
+        function updateHeaderStats() {
+            document.getElementById('star-count').textContent = AppState.stars;
+            document.getElementById('total-game-score').textContent = `${AppState.totalGameScore} Poin`;
+            // Total aktivitas terukur = 12 langkah
+            const pct = Math.min(100, Math.round((AppState.completedSteps.size / 12) * 100));
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+            document.getElementById('progress-text').textContent = `${pct}%`;
+        }
+
+        function showToast(title, msg, icon = '🌟') {
+            const box = document.getElementById('toast-box');
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-msg').textContent = msg;
+            document.getElementById('toast-icon').textContent = icon;
+            box.classList.remove('hidden');
+            setTimeout(() => box.classList.add('hidden'), 4000);
+        }
+
+        function openModal(id) {
+            const m = document.getElementById(id);
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        /* =====================================================================
+           3. NAVIGASI HALAMAN PEMBUKA & 7 MENU UTAMA
+        ====================================================================== */
+        function startApp() {
+            AudioEngine.init();
+            AudioEngine.startBGM();
+            playClick();
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            document.getElementById('main-app').classList.add('flex');
+            speakText('Halo teman-teman! Selamat datang di Petualangan Dunia Diagram. Ayo belajar membaca dan membuat diagram bersama Didi!');
+            switchMenu('materi', false);
+        }
+
+        function goHome() {
+            playClick();
+            window.speechSynthesis.cancel();
+            document.getElementById('main-app').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('flex');
+            document.getElementById('welcome-screen').classList.remove('hidden');
+        }
+
+        function switchMenu(menuId, withSound = true) {
+            if (withSound) playClick();
+            AppState.currentMenu = menuId;
+
+            // Sembunyikan semua section
+            document.querySelectorAll('.menu-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(`sec-${menuId}`).classList.remove('hidden');
+
+            // Update gaya tab aktif
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                if (btn.dataset.menu === menuId) {
+                    btn.className = 'nav-tab shrink-0 btn-3d px-3.5 py-2 rounded-xl font-display font-bold text-sm md:text-base flex items-center gap-1.5 bg-sky-500 text-white';
+                } else {
+                    btn.className = 'nav-tab shrink-0 btn-3d px-3.5 py-2 rounded-xl font-display font-bold text-sm md:text-base flex items-center gap-1.5 bg-white text-slate-700 border-2 border-sky-200';
+                }
+            });
+
+            if (menuId === 'pengembang') {
+                awardStar('visit_pengembang', 1, 'Terima kasih sudah mengenal pengembang MPI!');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function navigatePrev() {
+            const idx = AppState.menuOrder.indexOf(AppState.currentMenu);
+            const prevIdx = (idx - 1 + AppState.menuOrder.length) % AppState.menuOrder.length;
+            switchMenu(AppState.menuOrder[prevIdx]);
+        }
+
+        function navigateNext() {
+            const idx = AppState.menuOrder.indexOf(AppState.currentMenu);
+            const nextIdx = (idx + 1) % AppState.menuOrder.length;
+            switchMenu(AppState.menuOrder[nextIdx]);
+        }
+
+        /* =====================================================================
+           4. MENU 1: DATA & LOGIKA MATERI INTERAKTIF (5 BAGIAN + LATIHAN)
+        ====================================================================== */
+        const MateriData = [
+            {
+                title: '1. Pengertian dan Kegunaan Diagram',
+                narration: 'Apa itu diagram? Diagram adalah gambar atau grafik yang digunakan untuk menunjukkan informasi atau data agar lebih mudah dilihat dan dipahami. Dengan diagram, kita bisa langsung tahu mana yang paling banyak dan paling sedikit tanpa pusing membaca angka yang panjang.',
+                html: `
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                        <div class="lg:col-span-7 space-y-4">
+                            <span class="bg-orange-100 text-orange-700 font-bold px-3 py-1 rounded-full text-sm">Konsep Dasar</span>
+                            <h3 class="text-2xl md:text-3xl font-display font-bold text-sky-700">Apa Itu Diagram? 🤔</h3>
+                            <p class="text-lg text-slate-700 leading-relaxed">
+                                <strong>Diagram</strong> adalah cara menyajikan informasi atau <strong>data</strong> dalam bentuk gambar, simbol, atau batang agar <strong>mudah dibaca, dibandingkan, dan dipahami</strong>.
+                            </p>
+                            <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 space-y-2">
+                                <h4 class="font-display font-bold text-emerald-800 text-lg">✨ Kegunaan Diagram dalam Kehidupan Sehari-hari:</h4>
+                                <ul class="list-disc list-inside space-y-1 text-slate-700 font-semibold">
+                                    <li>Memudahkan kita melihat data yang <strong>paling banyak</strong> dan <strong>paling sedikit</strong>.</li>
+                                    <li>Membuat catatan angka yang rumit menjadi tampilan yang <strong>rapi dan menarik</strong>.</li>
+                                    <li>Membantu mengambil keputusan dengan cepat, misalnya menentukan buah favorit kelas!</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-5 bg-sky-50 border-2 border-sky-200 rounded-3xl p-5 text-center space-y-3">
+                            <p class="font-display font-bold text-sky-800">Bandingkan Kedua Tampilan Ini!</p>
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 text-xs text-left">
+                                <strong>❌ Tulisan Biasa:</strong> Siswa yang suka kucing ada 6 anak, kelinci 3 anak, burung 4 anak... (Perlu dibaca satu per satu)
+                            </div>
+                            <div class="text-2xl">⬇️</div>
+                            <div class="bg-white p-3 rounded-xl border-2 border-emerald-400">
+                                <p class="text-xs font-bold text-emerald-700 mb-2">✅ Dengan Diagram (Langsung Terlihat!):</p>
+                                <div class="flex items-end justify-center gap-4 h-24 pt-4">
+                                    <div class="flex flex-col items-center"><div class="w-8 h-16 bg-orange-400 rounded-t-lg"></div><span class="text-xs font-bold mt-1">🐱 6</span></div>
+                                    <div class="flex flex-col items-center"><div class="w-8 h-8 bg-sky-400 rounded-t-lg"></div><span class="text-xs font-bold mt-1">🐰 3</span></div>
+                                    <div class="flex flex-col items-center"><div class="w-8 h-11 bg-emerald-400 rounded-t-lg"></div><span class="text-xs font-bold mt-1">🐦 4</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                quiz: {
+                    question: 'Mengapa kita menyajikan data menggunakan diagram?',
+                    options: [
+                        'Agar data terlihat rumit dan sulit dibaca',
+                        'Agar data lebih rapi, menarik, dan mudah dipahami',
+                        'Agar semua angka hilang dari catatan'
+                    ],
+                    correctIndex: 1,
+                    feedbackCorrect: 'Tepat sekali! Diagram membuat data menjadi rapi dan mudah dibandingkan.',
+                    feedbackWrong: 'Belum tepat. Ingat ya, diagram justru mempermudah kita membaca dan membandingkan data!'
+                }
+            },
+            {
+                title: '2. Cara Mengumpulkan dan Mengelompokkan Data',
+                narration: 'Sebelum membuat diagram, kita harus mengumpulkan data terlebih dahulu. Caranya bisa dengan bertanya langsung atau wawancara, mengamati, atau mengisi lembar angket. Setelah terkumpul, kelompokkan data yang sama ke dalam tabel agar rapi.',
+                html: `
+                    <div class="space-y-5">
+                        <h3 class="text-2xl md:text-3xl font-display font-bold text-sky-700">Bagaimana Cara Mengumpulkan & Mengelompokkan Data? 📋</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-amber-50 border-2 border-amber-300 p-4 rounded-2xl">
+                                <div class="text-3xl mb-1">🗣️ 1. Wawancara</div>
+                                <p class="text-sm font-semibold text-slate-700">Bertanya langsung kepada teman, guru, atau keluarga tentang pilihan mereka.</p>
+                            </div>
+                            <div class="bg-sky-50 border-2 border-sky-300 p-4 rounded-2xl">
+                                <div class="text-3xl mb-1">👀 2. Pengamatan</div>
+                                <p class="text-sm font-semibold text-slate-700">Menghitung langsung benda yang ada, misalnya jumlah kendaraan yang lewat di depan sekolah.</p>
+                            </div>
+                            <div class="bg-emerald-50 border-2 border-emerald-300 p-4 rounded-2xl">
+                                <div class="text-3xl mb-1">🗂️ 3. Mengelompokkan</div>
+                                <p class="text-sm font-semibold text-slate-700">Menyatukan jawaban yang sama ke dalam <strong>Tabel Turus</strong> lalu menghitung jumlahnya.</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
+                            <p class="font-bold text-slate-800 mb-2">Contoh Pengelompokan Mainan Favorit 10 Siswa:</p>
+                            <div class="flex flex-wrap gap-2 mb-3 text-xl bg-white p-3 rounded-xl border">
+                                <span>⚽ Bola</span> <span>•</span> <span>🚗 Mobil</span> <span>•</span> <span>⚽ Bola</span> <span>•</span> <span>🧸 Boneka</span> <span>•</span> <span>⚽ Bola</span> <span>•</span> <span>🚗 Mobil</span> <span>•</span> <span>⚽ Bola</span> <span>•</span> <span>🧸 Boneka</span> <span>•</span> <span>⚽ Bola</span> <span>•</span> <span>🚗 Mobil</span>
+                            </div>
+                            <p class="text-sm font-bold text-emerald-700">Setelah dikelompokkan: ⚽ Bola = 5 siswa | 🚗 Mobil = 3 siswa | 🧸 Boneka = 2 siswa.</p>
+                        </div>
+                    </div>
+                `,
+                quiz: {
+                    question: 'Jika Didi bertanya langsung kepada 10 temannya tentang hobi mereka, cara pengumpulan data itu disebut...',
+                    options: [
+                        'Menggambar bebas',
+                        'Wawancara (bertanya langsung)',
+                        'Menebak angka'
+                    ],
+                    correctIndex: 1,
+                    feedbackCorrect: 'Pintar! Bertanya langsung kepada narasumber disebut wawancara.',
+                    feedbackWrong: 'Coba ingat lagi! Kegiatan bertanya langsung kepada teman disebut wawancara.'
+                }
+            },
+            {
+                title: '3. Cara Membaca Judul, Kategori, Angka & Skala',
+                narration: 'Untuk membaca diagram dengan benar, perhatikan empat bagian pentingnya. Pertama judul diagram di bagian atas. Kedua kategori di garis mendatar. Ketiga angka dan skala di garis tegak. Perhatikan lompatan angka pada skala dengan teliti.',
+                html: `
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                        <div class="lg:col-span-6 space-y-3">
+                            <h3 class="text-2xl md:text-3xl font-display font-bold text-sky-700">4 Bagian Penting Diagram 🔍</h3>
+                            <div class="space-y-2.5">
+                                <div class="p-3 bg-rose-50 border-l-4 border-rose-500 rounded-r-xl">
+                                    <strong class="text-rose-700">1. Judul Diagram:</strong> Menerangkan isi keseluruhan diagram (terletak di bagian paling atas).
+                                </div>
+                                <div class="p-3 bg-amber-50 border-l-4 border-amber-500 rounded-r-xl">
+                                    <strong class="text-amber-700">2. Kategori (Sumbu Mendatar):</strong> Menunjukkan jenis kelompok data (contoh: Apel, Mangga, Jeruk).
+                                </div>
+                                <div class="p-3 bg-sky-50 border-l-4 border-sky-500 rounded-r-xl">
+                                    <strong class="text-sky-700">3. Angka / Frekuensi (Sumbu Tegak):</strong> Menunjukkan banyaknya data pada setiap kategori.
+                                </div>
+                                <div class="p-3 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl">
+                                    <strong class="text-emerald-700">4. Skala Diagram:</strong> Jarak lompatan angka pada garis tegak (bisa loncat 1, loncat 2, atau loncat 5).
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-6 bg-white border-2 border-sky-300 rounded-3xl p-5 shadow-inner">
+                            <div class="text-center bg-rose-100 text-rose-800 font-display font-bold py-1.5 px-3 rounded-xl mb-3 text-sm">
+                                ⬆️ JUDUL: Buah Kesukaan Siswa Kelas IV
+                            </div>
+                            <div class="flex items-end gap-3 h-48 border-l-4 border-b-4 border-slate-700 ml-12 mr-4 px-4 relative">
+                                <div class="absolute -left-12 inset-y-0 flex flex-col justify-between text-xs font-bold text-sky-700">
+                                    <span>10</span>
+                                    <span>8</span>
+                                    <span>6</span>
+                                    <span>4</span>
+                                    <span>2</span>
+                                    <span>0</span>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center">
+                                    <span class="text-xs font-bold mb-1">5</span>
+                                    <div class="w-10 h-20 bg-rose-400 rounded-t-lg"></div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center">
+                                    <span class="text-xs font-bold mb-1">8</span>
+                                    <div class="w-10 h-32 bg-amber-400 rounded-t-lg"></div>
+                                </div>
+                                <div class="flex-1 flex flex-col items-center">
+                                    <span class="text-xs font-bold mb-1">4</span>
+                                    <div class="w-10 h-16 bg-orange-400 rounded-t-lg"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-around ml-12 mr-4 mt-2 text-xs font-bold text-amber-800 bg-amber-100 py-1 rounded-lg">
+                                <span>Apel</span>
+                                <span>Mangga</span>
+                                <span>Jeruk</span>
+                            </div>
+                            <p class="text-center text-xs font-bold text-slate-500 mt-1">⬅️ Sumbu Tegak (Skala loncat 2) | Sumbu Mendatar (Kategori) ➡️</p>
+                        </div>
+                    </div>
+                `,
+                quiz: {
+                    question: 'Jika angka pada garis tegak diagram tertulis 0, 2, 4, 6, 8, 10, maka skala diagram tersebut menggunakan lompatan...',
+                    options: [
+                        'Loncat 1',
+                        'Loncat 2',
+                        'Loncat 5'
+                    ],
+                    correctIndex: 1,
+                    feedbackCorrect: 'Hebat! Dari 0 ke 2, lalu ke 4, artinya skala menggunakan lompatan 2.',
+                    feedbackWrong: 'Perhatikan selisih angkanya: 2 - 0 = 2, 4 - 2 = 2. Jadi skalanya loncat 2!'
+                }
+            },
+            {
+                title: '4. Diagram Gambar (Piktogram)',
+                narration: 'Diagram gambar atau piktogram adalah diagram yang menyajikan data menggunakan simbol gambar. Ingat! Selalu periksa keterangan di bagian bawah piktogram karena satu gambar bisa mewakili satu siswa atau lebih.',
+                html: `
+                    <div class="space-y-4">
+                        <h3 class="text-2xl md:text-3xl font-display font-bold text-sky-700">Diagram Gambar (Piktogram) 🖼️</h3>
+                        <p class="text-base md:text-lg text-slate-700">
+                            <strong>Diagram Gambar (Piktogram)</strong> menampilkan data menggunakan simbol gambar yang menarik. Perhatikan <strong>kunci/keterangan gambar</strong> agar tidak salah menghitung!
+                        </p>
+                        <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-5 max-w-2xl mx-auto">
+                            <h4 class="font-display font-bold text-center text-lg text-amber-900 mb-3">Piktogram Buah Kesukaan Siswa Kelas IV</h4>
+                            <table class="w-full bg-white rounded-xl overflow-hidden border border-amber-300">
+                                <thead class="bg-amber-200 text-amber-950 font-display">
+                                    <tr>
+                                        <th class="p-2.5 text-left">Buah</th>
+                                        <th class="p-2.5 text-left">Gambar (1 Gambar = 1 Siswa)</th>
+                                        <th class="p-2.5 text-center">Jumlah</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-amber-100 font-bold">
+                                    <tr><td class="p-2.5">Apel</td><td class="p-2.5 text-xl">🍎 🍎 🍎 🍎 🍎</td><td class="p-2.5 text-center">5</td></tr>
+                                    <tr><td class="p-2.5">Mangga</td><td class="p-2.5 text-xl">🥭 🥭 🥭 🥭 🥭 🥭 🥭 🥭</td><td class="p-2.5 text-center">8</td></tr>
+                                    <tr><td class="p-2.5">Jeruk</td><td class="p-2.5 text-xl">🍊 🍊 🍊 🍊</td><td class="p-2.5 text-center">4</td></tr>
+                                </tbody>
+                            </table>
+                            <p class="text-xs font-bold text-amber-800 mt-2 text-center">💡 Keterangan: 1 gambar buah mewakili 1 orang siswa.</p>
+                        </div>
+                    </div>
+                `,
+                quiz: {
+                    question: 'Pada piktogram, jika 1 gambar bintang (⭐) mewakili 2 siswa, dan ada 4 gambar bintang, maka jumlah siswanya adalah...',
+                    options: [
+                        '4 siswa',
+                        '6 siswa',
+                        '8 siswa'
+                    ],
+                    correctIndex: 2,
+                    feedbackCorrect: 'Luar biasa! 4 gambar × 2 siswa = 8 siswa.',
+                    feedbackWrong: 'Hitung dengan teliti ya: 4 gambar × 2 siswa = 8 siswa!'
+                }
+            },
+            {
+                title: '5. Diagram Batang & Pengayaan Diagram Garis',
+                narration: 'Diagram batang menyajikan data dalam bentuk batang persegi panjang yang tegak atau mendatar. Semakin tinggi batangnya, semakin banyak datanya. Sebagai pengayaan, ada juga diagram garis yang menghubungkan titik-titik data untuk melihat perubahan dari waktu ke waktu.',
+                html: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-sky-50 border-2 border-sky-300 rounded-2xl p-5 space-y-3">
+                            <h4 class="font-display font-bold text-xl text-sky-800">📊 Diagram Batang</h4>
+                            <p class="text-sm font-semibold text-slate-700">
+                                Diagram batang menggunakan batang-batang berbentuk persegi panjang dengan lebar yang sama. <strong>Tinggi batang</strong> menunjukkan banyaknya data.
+                            </p>
+                            <div class="bg-white p-4 rounded-xl border border-sky-200 flex items-end justify-around h-36">
+                                <div class="flex flex-col items-center"><span class="text-xs font-bold">5</span><div class="w-9 h-16 bg-rose-400 rounded-t-md"></div><span class="text-xs font-bold mt-1">Apel</span></div>
+                                <div class="flex flex-col items-center"><span class="text-xs font-bold">8</span><div class="w-9 h-24 bg-amber-400 rounded-t-md"></div><span class="text-xs font-bold mt-1">Mangga</span></div>
+                                <div class="flex flex-col items-center"><span class="text-xs font-bold">6</span><div class="w-9 h-20 bg-yellow-400 rounded-t-md"></div><span class="text-xs font-bold mt-1">Pisang</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-purple-50 border-2 border-purple-300 rounded-2xl p-5 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-display font-bold text-xl text-purple-800">📈 Pengayaan: Diagram Garis</h4>
+                                <span class="bg-purple-200 text-purple-800 text-xs font-bold px-2.5 py-1 rounded-full">Pengayaan</span>
+                            </div>
+                            <p class="text-sm font-semibold text-slate-700">
+                                Diagram garis menghubungkan titik-titik data dengan garis lurus. Cocok untuk melihat perubahan data dari waktu ke waktu (misal: suhu harian atau tinggi badan).
+                            </p>
+                            <div class="bg-white p-3 rounded-xl border border-purple-200">
+                                <svg viewBox="0 0 220 90" class="w-full h-28">
+                                    <line x1="20" y1="75" x2="200" y2="75" stroke="#64748B" stroke-width="2"/>
+                                    <line x1="20" y1="10" x2="20" y2="75" stroke="#64748B" stroke-width="2"/>
+                                    <polyline fill="none" stroke="#9333EA" stroke-width="3" points="40,60 95,30 150,45 190,18"/>
+                                    <circle cx="40" cy="60" r="4" fill="#F97316"/>
+                                    <circle cx="95" cy="30" r="4" fill="#F97316"/>
+                                    <circle cx="150" cy="45" r="4" fill="#F97316"/>
+                                    <circle cx="190" cy="18" r="4" fill="#F97316"/>
+                                    <text x="30" y="87" font-size="9" font-weight="bold">Sen</text>
+                                    <text x="85" y="87" font-size="9" font-weight="bold">Sel</text>
+                                    <text x="140" y="87" font-size="9" font-weight="bold">Rab</text>
+                                    <text x="180" y="87" font-size="9" font-weight="bold">Kam</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                quiz: {
+                    question: 'Pada diagram batang tegak, semakin tinggi batang suatu kategori maka artinya...',
+                    options: [
+                        'Jumlah datanya semakin sedikit',
+                        'Jumlah datanya semakin banyak',
+                        'Datanya tidak bisa dihitung'
+                    ],
+                    correctIndex: 1,
+                    feedbackCorrect: 'Benar sekali! Batang yang paling tinggi menunjukkan data yang paling banyak.',
+                    feedbackWrong: 'Ingat ya, tinggi batang mewakili jumlah data. Semakin tinggi batang, semakin banyak datanya!'
+                }
+            }
+        ];
+
+        let currentMateriIdx = 0;
+
+        function selectMateriStep(idx) {
+            playClick();
+            currentMateriIdx = idx;
+            const item = MateriData[idx];
+
+            // Update tombol tab materi
+            document.querySelectorAll('.m-tab').forEach((btn, i) => {
+                if (i === idx) {
+                    btn.className = 'm-tab btn-3d bg-orange-500 text-white font-display font-bold p-3 rounded-2xl text-sm md:text-base text-center';
+                } else {
+                    btn.className = 'm-tab btn-3d bg-white text-slate-700 border-2 border-sky-200 font-display font-bold p-3 rounded-2xl text-sm md:text-base text-center';
+                }
+            });
+
+            // Render isi materi + latihan singkat
+            const box = document.getElementById('materi-content-box');
+            box.innerHTML = `
+                <div class="space-y-6 animate-pop">
+                    ${item.html}
+                    
+                    <!-- Latihan Singkat Materi -->
+                    <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-5 mt-6 space-y-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">✍️</span>
+                            <h4 class="font-display font-bold text-lg text-amber-900">Latihan Singkat Bagian ${idx + 1}</h4>
+                        </div>
+                        <p class="font-bold text-slate-800">${item.quiz.question}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            ${item.quiz.options.map((opt, optIdx) => `
+                                <button onclick="checkMateriQuiz(${idx}, ${optIdx})" class="btn-3d bg-white hover:bg-sky-100 border-2 border-amber-300 text-slate-800 font-bold p-3 rounded-xl text-left text-sm md:text-base">
+                                    ${String.fromCharCode(65 + optIdx)}. ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div id="materi-quiz-feedback" class="hidden p-3 rounded-xl font-bold text-sm md:text-base"></div>
+                    </div>
+
+                    <div class="flex justify-between pt-2">
+                        <button onclick="selectMateriStep(${Math.max(0, idx - 1)})" ${idx === 0 ? 'disabled class="opacity-40 bg-slate-200 px-5 py-2.5 rounded-xl font-bold"' : 'class="btn-3d bg-sky-100 text-sky-700 px-5 py-2.5 rounded-xl font-bold"'}>
+                            ⬅️ Bagian Sebelumnya
+                        </button>
+                        ${idx < MateriData.length - 1 ? `
+                            <button onclick="selectMateriStep(${idx + 1})" class="btn-3d bg-sky-500 text-white px-5 py-2.5 rounded-xl font-bold">
+                                Bagian Selanjutnya ➡️
+                            </button>
+                        ` : `
+                            <button onclick="switchMenu('simulasi')" class="btn-3d bg-emerald-500 text-white px-5 py-2.5 rounded-xl font-bold">
+                                Lanjut ke Simulasi 📊 ➡️
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        function speakCurrentMateri() {
+            speakText(MateriData[currentMateriIdx].narration);
+        }
+
+        function checkMateriQuiz(stepIdx, chosenIdx) {
+            const q = MateriData[stepIdx].quiz;
+            const fb = document.getElementById('materi-quiz-feedback');
+            fb.classList.remove('hidden');
+            if (chosenIdx === q.correctIndex) {
+                AudioEngine.correct();
+                fb.className = 'p-3 rounded-xl font-bold text-sm md:text-base bg-emerald-100 text-emerald-800 border border-emerald-400';
+                fb.textContent = `🎉 ${q.feedbackCorrect}`;
+                awardStar(`materi_${stepIdx}`, 1, `Menyelesaikan latihan Materi Bagian ${stepIdx + 1}!`);
+            } else {
+                AudioEngine.wrong();
+                fb.className = 'p-3 rounded-xl font-bold text-sm md:text-base bg-rose-100 text-rose-800 border border-rose-400';
+                fb.textContent = `😅 ${q.feedbackWrong}`;
+            }
+        }
+
+        /* =====================================================================
+           5. MENU 2: SIMULASI INTERAKTIF BUAH KESUKAAN
+        ====================================================================== */
+        let simData = [
+            { id: 'apel', name: 'Apel', emoji: '🍎', count: 5, color: 'bg-rose-500' },
+            { id: 'mangga', name: 'Mangga', emoji: '🥭', count: 8, color: 'bg-amber-400' },
+            { id: 'jeruk', name: 'Jeruk', emoji: '🍊', count: 4, color: 'bg-orange-500' },
+            { id: 'pisang', name: 'Pisang', emoji: '🍌', count: 6, color: 'bg-yellow-400' },
+            { id: 'semangka', name: 'Semangka', emoji: '🍉', count: 3, color: 'bg-emerald-500' }
+        ];
+
+        function renderSimulasi() {
+            const tbody = document.getElementById('sim-table-body');
+            const chart = document.getElementById('sim-chart-bars');
+            tbody.innerHTML = '';
+            chart.innerHTML = '';
+
+            let total = 0;
+            simData.forEach((item, idx) => {
+                total += item.count;
+                // Baris Tabel
+                tbody.innerHTML += `
+                    <tr class="hover:bg-emerald-50/50">
+                        <td class="p-3 flex items-center gap-2">
+                            <span class="text-2xl">${item.emoji}</span>
+                            <span>${item.name}</span>
+                        </td>
+                        <td class="p-3 text-center text-lg text-sky-700">${item.count}</td>
+                        <td class="p-3 text-center">
+                            <div class="inline-flex items-center gap-1.5">
+                                <button onclick="changeSimCount(${idx}, -1)" class="btn-3d bg-rose-100 hover:bg-rose-200 text-rose-700 w-9 h-9 rounded-xl font-bold text-lg">-</button>
+                                <button onclick="changeSimCount(${idx}, 1)" class="btn-3d bg-emerald-100 hover:bg-emerald-200 text-emerald-700 w-9 h-9 rounded-xl font-bold text-lg">+</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+
+                // Batang Diagram (Skala max = 12)
+                const heightPct = Math.min(100, (item.count / 12) * 100);
+                chart.innerHTML += `
+                    <div class="flex flex-col items-center justify-end h-full w-14 sm:w-16">
+                        <span class="font-display font-bold text-sm text-slate-800 mb-1">${item.count}</span>
+                        <div class="w-10 sm:w-12 ${item.color} rounded-t-xl bar-grow shadow-md border-2 border-white" style="height: ${heightPct}%"></div>
+                        <div class="mt-2 text-center">
+                            <span class="text-lg block leading-none">${item.emoji}</span>
+                            <span class="text-[11px] font-bold text-slate-700">${item.name}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('sim-total-display').textContent = `${total} Siswa`;
+            renderSimQuestions();
+        }
+
+        function changeSimCount(idx, delta) {
+            playClick();
+            const nextVal = simData[idx].count + delta;
+            if (nextVal >= 0 && nextVal <= 12) {
+                simData[idx].count = nextVal;
+                renderSimulasi();
+            }
+        }
+
+        function resetSimulasi() {
+            playClick();
+            const defaults = [5, 8, 4, 6, 3];
+            simData.forEach((d, i) => d.count = defaults[i]);
+            renderSimulasi();
+            document.getElementById('sim-feedback').textContent = '';
+        }
+
+        function renderSimQuestions() {
+            const container = document.getElementById('sim-questions-container');
+            const optionsHtml = simData.map(d => `<option value="${d.name}">${d.emoji} ${d.name}</option>`).join('');
+            container.innerHTML = `
+                <div class="bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200">
+                    <label class="block font-bold text-sm text-slate-700 mb-1.5">1. Buah apa yang paling disukai?</label>
+                    <select id="sim-q1" class="w-full p-2.5 rounded-xl border-2 border-amber-300 font-bold bg-white">
+                        <option value="">-- Pilih Buah --</option>
+                        ${optionsHtml}
+                    </select>
+                </div>
+                <div class="bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200">
+                    <label class="block font-bold text-sm text-slate-700 mb-1.5">2. Buah apa yang paling sedikit disukai?</label>
+                    <select id="sim-q2" class="w-full p-2.5 rounded-xl border-2 border-amber-300 font-bold bg-white">
+                        <option value="">-- Pilih Buah --</option>
+                        ${optionsHtml}
+                    </select>
+                </div>
+                <div class="bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200">
+                    <label class="block font-bold text-sm text-slate-700 mb-1.5">3. Berapa jumlah seluruh siswa?</label>
+                    <input type="number" id="sim-q3" placeholder="Ketik angka..." class="w-full p-2.5 rounded-xl border-2 border-amber-300 font-bold bg-white">
+                </div>
+                <div class="bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200">
+                    <label class="block font-bold text-sm text-slate-700 mb-1.5">4. Berapa selisih penggemar Mangga dan Semangka?</label>
+                    <input type="number" id="sim-q4" placeholder="Ketik angka..." class="w-full p-2.5 rounded-xl border-2 border-amber-300 font-bold bg-white">
+                </div>
+            `;
+        }
+
+        function checkSimulasiAnswers() {
+            const maxVal = Math.max(...simData.map(d => d.count));
+            const minVal = Math.min(...simData.map(d => d.count));
+            const mostLiked = simData.filter(d => d.count === maxVal).map(d => d.name);
+            const leastLiked = simData.filter(d => d.count === minVal).map(d => d.name);
+            const total = simData.reduce((acc, d) => acc + d.count, 0);
+            const mangga = simData.find(d => d.id === 'mangga').count;
+            const semangka = simData.find(d => d.id === 'semangka').count;
+            const diff = Math.abs(mangga - semangka);
+
+            const a1 = document.getElementById('sim-q1').value;
+            const a2 = document.getElementById('sim-q2').value;
+            const a3 = parseInt(document.getElementById('sim-q3').value);
+            const a4 = parseInt(document.getElementById('sim-q4').value);
+
+            let correctCount = 0;
+            if (mostLiked.includes(a1)) correctCount++;
+            if (leastLiked.includes(a2)) correctCount++;
+            if (a3 === total) correctCount++;
+            if (a4 === diff) correctCount++;
+
+            const fb = document.getElementById('sim-feedback');
+            if (correctCount === 4) {
+                AudioEngine.correct();
+                fb.className = 'font-bold text-emerald-700 bg-emerald-100 px-4 py-2 rounded-xl border border-emerald-300';
+                fb.textContent = '🎉 Sempurna! Semua jawabanmu sesuai dengan diagram saat ini!';
+                awardStar('simulasi_done', 2, 'Berhasil menganalisis data simulasi buah!');
+            } else {
+                AudioEngine.wrong();
+                fb.className = 'font-bold text-rose-700 bg-rose-100 px-4 py-2 rounded-xl border border-rose-300';
+                fb.textContent = `Baru ${correctCount} dari 4 yang benar. Periksa kembali angka pada diagram ya!`;
+            }
+        }
+
+        /* =====================================================================
+           6. MENU 3: PRAKTIKUM SEDERHANA (SURVEI KESUKAAN TEMAN-TEMANKU)
+        ====================================================================== */
+        const PraktikumTopics = {
+            hewan: {
+                title: 'Diagram Survei Hewan Kesukaan Teman',
+                items: [
+                    { name: 'Kucing', emoji: '🐱', sticker: '🟥', color: 'bg-rose-400', val: 0 },
+                    { name: 'Kelinci', emoji: '🐰', sticker: '🟨', color: 'bg-amber-400', val: 0 },
+                    { name: 'Burung', emoji: '🐦', sticker: '🟩', color: 'bg-emerald-400', val: 0 },
+                    { name: 'Ikan Hias', emoji: '🐠', sticker: '🟦', color: 'bg-sky-400', val: 0 }
+                ]
+            },
+            sekolah: {
+                title: 'Diagram Survei Alat Sekolah Favorit',
+                items: [
+                    { name: 'Buku Gambar', emoji: '📒', sticker: '🟥', color: 'bg-rose-400', val: 0 },
+                    { name: 'Pensil Warna', emoji: '🖍️', sticker: '🟨', color: 'bg-amber-400', val: 0 },
+                    { name: 'Tas Ransel', emoji: '🎒', sticker: '🟩', color: 'bg-emerald-400', val: 0 },
+                    { name: 'Kotak Pensil', emoji: '📐', sticker: '🟦', color: 'bg-sky-400', val: 0 }
+                ]
+            },
+            mainan: {
+                title: 'Diagram Survei Mainan Favorit Teman',
+                items: [
+                    { name: 'Bola', emoji: '⚽', sticker: '🟥', color: 'bg-rose-400', val: 0 },
+                    { name: 'Boneka', emoji: '🧸', sticker: '🟨', color: 'bg-amber-400', val: 0 },
+                    { name: 'Robot', emoji: '🤖', sticker: '🟩', color: 'bg-emerald-400', val: 0 },
+                    { name: 'Sepeda', emoji: '🚲', sticker: '🟦', color: 'bg-sky-400', val: 0 }
+                ]
+            }
+        };
+
+        let activePraktikumTopic = 'hewan';
+
+        function setPraktikumTopic(topicKey) {
+            playClick();
+            activePraktikumTopic = topicKey;
+            document.querySelectorAll('.ptopic-btn').forEach(btn => {
+                if (btn.id === `ptopic-${topicKey}`) {
+                    btn.className = 'ptopic-btn btn-3d bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-sm';
+                } else {
+                    btn.className = 'ptopic-btn btn-3d bg-white text-slate-700 border-2 border-emerald-200 font-bold px-4 py-2 rounded-xl text-sm';
+                }
+            });
+            renderPraktikum();
+        }
+
+        function renderPraktikum() {
+            const topic = PraktikumTopics[activePraktikumTopic];
+            document.getElementById('praktikum-chart-title').textContent = topic.title;
+            const tbody = document.getElementById('praktikum-table-body');
+            const chart = document.getElementById('praktikum-chart-bars');
+            tbody.innerHTML = '';
+            chart.innerHTML = '';
+
+            let total = 0;
+            topic.items.forEach((item, idx) => {
+                total += item.val;
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-2.5 font-bold">${item.emoji} ${item.name}</td>
+                        <td class="p-2.5 text-center">
+                            <input type="number" min="0" max="10" value="${item.val}" onchange="updatePraktikumVal(${idx}, this.value)" class="w-16 p-1.5 text-center border-2 border-sky-300 rounded-xl font-bold">
+                        </td>
+                        <td class="p-2.5 text-center text-sm">${item.sticker.repeat(item.val) || '-'}</td>
+                    </tr>
+                `;
+
+                const heightPct = Math.min(100, (item.val / 10) * 100);
+                chart.innerHTML += `
+                    <div class="flex flex-col items-center justify-end h-full w-16">
+                        <span class="font-bold text-xs mb-1">${item.val}</span>
+                        <div class="w-10 ${item.color} rounded-t-lg bar-grow" style="height: ${heightPct}%"></div>
+                        <span class="text-[11px] font-bold mt-1 text-center">${item.emoji} ${item.name}</span>
+                    </div>
+                `;
+            });
+
+            const totalEl = document.getElementById('praktikum-total-teman');
+            totalEl.textContent = `${total} / 10 Teman`;
+            totalEl.className = total === 10 ? 'font-display font-bold text-xl text-emerald-600' : 'font-display font-bold text-xl text-orange-600';
+        }
+
+        function updatePraktikumVal(idx, val) {
+            const num = Math.max(0, Math.min(10, parseInt(val) || 0));
+            PraktikumTopics[activePraktikumTopic].items[idx].val = num;
+            renderPraktikum();
+        }
+
+        function checkPraktikum() {
+            const topic = PraktikumTopics[activePraktikumTopic];
+            const total = topic.items.reduce((s, i) => s + i.val, 0);
+            const kesimpulan = document.getElementById('praktikum-kesimpulan').value.trim();
+            const fb = document.getElementById('praktikum-feedback');
+
+            if (total !== 10) {
+                AudioEngine.wrong();
+                fb.className = 'font-bold text-rose-700 bg-rose-100 px-4 py-2 rounded-xl';
+                fb.textContent = `Jumlah teman harus tepat 10 orang! Saat ini baru ${total} teman.`;
+                return;
+            }
+            if (kesimpulan.length < 8) {
+                AudioEngine.wrong();
+                fb.className = 'font-bold text-rose-700 bg-rose-100 px-4 py-2 rounded-xl';
+                fb.textContent = 'Tuliskan kesimpulan hasil surveimu terlebih dahulu ya!';
+                return;
+            }
+
+            AudioEngine.correct();
+            fb.className = 'font-bold text-emerald-700 bg-emerald-100 px-4 py-2 rounded-xl';
+            fb.textContent = '🌟 Hebat! Data 10 teman sudah lengkap, diagram terbentuk rapi, dan kesimpulanmu sangat bagus!';
+            awardStar('praktikum_done', 2, 'Menyelesaikan Praktikum Survei Teman!');
+        }
+
+        /* =====================================================================
+           7. MENU 4: GAME INTERAKTIF (3 GAMES × 5 TANTANGAN, TIMER 30 DETIK)
+        ====================================================================== */
+        const GameEngine = {
+            activeGame: 0,
+            qIndex: 0,
+            score: 0,
+            timer: 30,
+            timerId: null,
+            userBars: [0, 0, 0],
+
+            // 5 Tantangan Game 1: Tebak Diagram
+            g1Challenges: [
+                {
+                    title: 'Banyak Hewan Peliharaan Siswa',
+                    bars: [{ label: '🐱 Kucing', val: 7, c: 'bg-rose-400' }, { label: '🐰 Kelinci', val: 4, c: 'bg-sky-400' }, { label: '🐦 Burung', val: 5, c: 'bg-emerald-400' }],
+                    q: 'Hewan peliharaan apa yang paling banyak dimiliki siswa?',
+                    opts: ['Kucing', 'Kelinci', 'Burung'],
+                    ans: 0
+                },
+                {
+                    title: 'Alat Tulis di Kotak Pensil Didi',
+                    bars: [{ label: '✏️ Pensil', val: 6, c: 'bg-amber-400' }, { label: '🖊️ Pulpen', val: 3, c: 'bg-indigo-400' }, { label: '🧽 Penghapus', val: 2, c: 'bg-pink-400' }],
+                    q: 'Berapa banyak pensil yang dimiliki Didi?',
+                    opts: ['3 buah', '6 buah', '2 buah'],
+                    ans: 1
+                },
+                {
+                    title: 'Mainan Kesukaan Anak Kelas IV',
+                    bars: [{ label: '⚽ Bola', val: 9, c: 'bg-emerald-500' }, { label: '🧸 Boneka', val: 6, c: 'bg-rose-400' }, { label: '🚗 Mobilan', val: 8, c: 'bg-sky-500' }],
+                    q: 'Mainan apa yang paling sedikit disukai?',
+                    opts: ['Bola', 'Boneka', 'Mobilan'],
+                    ans: 1
+                },
+                {
+                    title: 'Warna Favorit Kelompok Melati',
+                    bars: [{ label: '🔵 Biru', val: 5, c: 'bg-blue-500' }, { label: '🟡 Kuning', val: 8, c: 'bg-yellow-400' }, { label: '🟢 Hijau', val: 5, c: 'bg-green-500' }],
+                    q: 'Dua warna yang memiliki jumlah pemilih sama banyak adalah...',
+                    opts: ['Biru dan Kuning', 'Biru dan Hijau', 'Kuning dan Hijau'],
+                    ans: 1
+                },
+                {
+                    title: 'Peminjaman Buku Perpustakaan',
+                    bars: [{ label: '📖 Cerita', val: 10, c: 'bg-orange-400' }, { label: '🔬 Sains', val: 7, c: 'bg-cyan-500' }, { label: '🎨 Komik', val: 9, c: 'bg-purple-400' }],
+                    q: 'Buku jenis apa yang paling sering dipinjam siswa?',
+                    opts: ['Buku Cerita', 'Buku Sains', 'Buku Komik'],
+                    ans: 0
+                }
+            ],
+
+            // 5 Tantangan Game 2: Susun Batang sesuai Tabel
+            g2Challenges: [
+                {
+                    instruction: 'Atur tinggi batang sesuai tabel: Apel = 4, Jeruk = 7, Pisang = 5',
+                    targets: [
+                        { label: '🍎 Apel', target: 4, c: 'bg-rose-500' },
+                        { label: '🍊 Jeruk', target: 7, c: 'bg-orange-400' },
+                        { label: '🍌 Pisang', target: 5, c: 'bg-yellow-400' }
+                    ]
+                },
+                {
+                    instruction: 'Atur tinggi batang sesuai tabel: Kucing = 8, Ikan = 3, Burung = 6',
+                    targets: [
+                        { label: '🐱 Kucing', target: 8, c: 'bg-purple-500' },
+                        { label: '🐠 Ikan', target: 3, c: 'bg-sky-400' },
+                        { label: '🐦 Burung', target: 6, c: 'bg-emerald-500' }
+                    ]
+                },
+                {
+                    instruction: 'Atur tinggi batang sesuai tabel: Pensil = 9, Penggaris = 4, Penghapus = 4',
+                    targets: [
+                        { label: '✏️ Pensil', target: 9, c: 'bg-amber-500' },
+                        { label: '📏 Penggaris', target: 4, c: 'bg-teal-500' },
+                        { label: '🧽 Penghapus', target: 4, c: 'bg-pink-500' }
+                    ]
+                },
+                {
+                    instruction: 'Atur tinggi batang sesuai tabel: Bola = 6, Robot = 2, Sepeda = 10',
+                    targets: [
+                        { label: '⚽ Bola', target: 6, c: 'bg-green-500' },
+                        { label: '🤖 Robot', target: 2, c: 'bg-indigo-500' },
+                        { label: '🚲 Sepeda', target: 10, c: 'bg-rose-500' }
+                    ]
+                },
+                {
+                    instruction: 'Atur tinggi batang sesuai tabel: Mangga = 7, Semangka = 9, Apel = 5',
+                    targets: [
+                        { label: '🥭 Mangga', target: 7, c: 'bg-amber-400' },
+                        { label: '🍉 Semangka', target: 9, c: 'bg-emerald-500' },
+                        { label: '🍎 Apel', target: 5, c: 'bg-red-500' }
+                    ]
+                }
+            ],
+
+            // 5 Tantangan Game 3: Detektif Data (Terbanyak, Tersedikit, Jumlah, Selisih)
+            g3Challenges: [
+                {
+                    title: 'Data Buah: Apel = 5, Mangga = 8, Jeruk = 4',
+                    bars: [{ label: '🍎 Apel', val: 5, c: 'bg-rose-400' }, { label: '🥭 Mangga', val: 8, c: 'bg-amber-400' }, { label: '🍊 Jeruk', val: 4, c: 'bg-orange-400' }],
+                    q: 'Detektif! Berapa JUMLAH KESELURUHAN buah pada diagram?',
+                    opts: ['15 buah', '17 buah', '19 buah'],
+                    ans: 1
+                },
+                {
+                    title: 'Data Hewan: Kucing = 9, Kelinci = 3, Ayam = 6',
+                    bars: [{ label: '🐱 Kucing', val: 9, c: 'bg-purple-400' }, { label: '🐰 Kelinci', val: 3, c: 'bg-sky-400' }, { label: '🐔 Ayam', val: 6, c: 'bg-amber-500' }],
+                    q: 'Detektif! Berapa SELISIH antara hewan terbanyak dan tersedikit?',
+                    opts: ['3 ekor', '6 ekor', '12 ekor'],
+                    ans: 1
+                },
+                {
+                    title: 'Data Mainan: Bola = 7, Boneka = 4, Mobil = 9',
+                    bars: [{ label: '⚽ Bola', val: 7, c: 'bg-emerald-400' }, { label: '🧸 Boneka', val: 4, c: 'bg-pink-400' }, { label: '🚗 Mobil', val: 9, c: 'bg-blue-400' }],
+                    q: 'Detektif! Kategori mana yang datanya TERSEDIKIT?',
+                    opts: ['Bola', 'Boneka', 'Mobil'],
+                    ans: 1
+                },
+                {
+                    title: 'Data Alat Sekolah: Buku = 10, Pensil = 6, Penghapus = 4',
+                    bars: [{ label: '📘 Buku', val: 10, c: 'bg-sky-500' }, { label: '✏️ Pensil', val: 6, c: 'bg-amber-400' }, { label: '🧽 Penghapus', val: 4, c: 'bg-rose-400' }],
+                    q: 'Detektif! Berapa JUMLAH KESELURUHAN alat sekolah tersebut?',
+                    opts: ['16 alat', '18 alat', '20 alat'],
+                    ans: 2
+                },
+                {
+                    title: 'Data Hobi: Membaca = 8, Melukis = 5, Menyanyi = 8',
+                    bars: [{ label: '📚 Membaca', val: 8, c: 'bg-indigo-400' }, { label: '🎨 Melukis', val: 5, c: 'bg-orange-400' }, { label: '🎤 Menyanyi', val: 8, c: 'bg-teal-400' }],
+                    q: 'Detektif! Berapa SELISIH penggemar Membaca dan Melukis?',
+                    opts: ['3 siswa', '5 siswa', '13 siswa'],
+                    ans: 0
+                }
+            ]
+        };
+
+        function startGame(gameNum) {
+            playClick();
+            GameEngine.activeGame = gameNum;
+            GameEngine.qIndex = 0;
+            GameEngine.score = 0;
+
+            const names = {
+                1: '🧐 Game 1: Tebak Diagram',
+                2: '🏗️ Game 2: Susun Batang',
+                3: '🕵️ Game 3: Detektif Data'
+            };
+            document.getElementById('active-game-title').textContent = names[gameNum];
+            document.getElementById('game-lobby').classList.add('hidden');
+            document.getElementById('game-arena').classList.remove('hidden');
+
+            loadGameChallenge();
+        }
+
+        function exitGame() {
+            clearInterval(GameEngine.timerId);
+            playClick();
+            document.getElementById('game-arena').classList.add('hidden');
+            document.getElementById('game-lobby').classList.remove('hidden');
+        }
+
+        function startGameTimer() {
+            clearInterval(GameEngine.timerId);
+            GameEngine.timer = 30;
+            const badge = document.getElementById('game-timer-badge');
+            badge.textContent = `⏱️ ${GameEngine.timer}d`;
+            badge.className = 'bg-rose-100 text-rose-700 font-display font-bold px-4 py-1.5 rounded-xl text-base';
+
+            GameEngine.timerId = setInterval(() => {
+                GameEngine.timer--;
+                badge.textContent = `⏱️ ${GameEngine.timer}d`;
+                if (GameEngine.timer <= 0) {
+                    clearInterval(GameEngine.timerId);
+                    AudioEngine.timeout();
+                    handleGameAnswerResult(false, 'Waktu habis! Ayo tetap semangat untuk tantangan berikutnya!');
+                }
+            }, 1000);
+        }
+
+        function loadGameChallenge() {
+            if (GameEngine.qIndex >= 5) {
+                finishGame();
+                return;
+            }
+
+            document.getElementById('game-q-num').textContent = GameEngine.qIndex + 1;
+            document.getElementById('game-current-score').textContent = GameEngine.score;
+            startGameTimer();
+
+            const stage = document.getElementById('game-stage-content');
+
+            if (GameEngine.activeGame === 1 || GameEngine.activeGame === 3) {
+                const list = GameEngine.activeGame === 1 ? GameEngine.g1Challenges : GameEngine.g3Challenges;
+                const item = list[GameEngine.qIndex];
+                stage.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center animate-pop">
+                        <div class="md:col-span-6 bg-sky-50 border-2 border-sky-200 rounded-2xl p-4">
+                            <p class="font-display font-bold text-center text-sky-900 mb-2">${item.title}</p>
+                            <div class="h-48 border-l-4 border-b-4 border-slate-700 ml-6 mr-2 flex items-end justify-around px-2 bg-white">
+                                ${item.bars.map(b => `
+                                    <div class="flex flex-col items-center justify-end h-full w-16">
+                                        <span class="font-bold text-xs mb-1">${b.val}</span>
+                                        <div class="w-10 ${b.c} rounded-t-lg" style="height: ${(b.val / 10) * 100}%"></div>
+                                        <span class="text-xs font-bold mt-1 text-center">${b.label}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="md:col-span-6 space-y-4">
+                            <h4 class="text-xl font-display font-bold text-slate-800">${item.q}</h4>
+                            <div class="space-y-2.5">
+                                ${item.opts.map((opt, idx) => `
+                                    <button onclick="submitG13Answer(${idx}, ${item.ans})" class="btn-3d w-full bg-white hover:bg-purple-50 border-2 border-purple-300 p-3.5 rounded-2xl text-left font-bold text-slate-800">
+                                        ${String.fromCharCode(65 + idx)}. ${opt}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div id="game-inline-fb"></div>
+                        </div>
+                    </div>
+                `;
+            } else if (GameEngine.activeGame === 2) {
+                const item = GameEngine.g2Challenges[GameEngine.qIndex];
+                GameEngine.userBars = [1, 1, 1];
+                renderGame2Stage(item);
+            }
+        }
+
+        function renderGame2Stage(item) {
+            const stage = document.getElementById('game-stage-content');
+            stage.innerHTML = `
+                <div class="space-y-5 animate-pop">
+                    <div class="bg-emerald-50 border-2 border-emerald-300 p-4 rounded-2xl text-center">
+                        <p class="font-display font-bold text-lg text-emerald-800">${item.instruction}</p>
+                    </div>
+                    <div class="max-w-lg mx-auto bg-white border-2 border-slate-200 rounded-2xl p-4">
+                        <div class="relative h-52 border-l-4 border-b-4 border-slate-700 ml-8 mr-4 flex items-end justify-around px-2">
+                            <div class="absolute -left-8 inset-y-0 flex flex-col justify-between text-xs font-bold text-slate-500">
+                                <span>10</span><span>5</span><span>0</span>
+                            </div>
+                            ${item.targets.map((t, i) => `
+                                <div class="flex flex-col items-center justify-end h-full w-20">
+                                    <span class="font-display font-bold text-base mb-1">${GameEngine.userBars[i]}</span>
+                                    <div class="w-12 ${t.c} rounded-t-xl bar-grow" style="height: ${(GameEngine.userBars[i] / 10) * 100}%"></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 ml-8 mr-4 mt-3 text-center">
+                            ${item.targets.map((t, i) => `
+                                <div class="bg-slate-50 p-2 rounded-xl border">
+                                    <p class="text-xs font-bold mb-1">${t.label}</p>
+                                    <div class="flex justify-center gap-1">
+                                        <button onclick="adjustG2Bar(${i}, -1)" class="btn-3d bg-rose-100 text-rose-700 w-8 h-8 rounded-lg font-bold">-</button>
+                                        <button onclick="adjustG2Bar(${i}, 1)" class="btn-3d bg-emerald-100 text-emerald-700 w-8 h-8 rounded-lg font-bold">+</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="text-center space-y-2">
+                        <button onclick="submitG2Answer()" class="btn-3d bg-emerald-500 hover:bg-emerald-600 text-white font-display font-bold px-8 py-3 rounded-2xl text-lg">
+                            ✅ Periksa Susunan Batang
+                        </button>
+                        <div id="game-inline-fb"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function adjustG2Bar(idx, delta) {
+            playClick();
+            const val = GameEngine.userBars[idx] + delta;
+            if (val >= 0 && val <= 10) {
+                GameEngine.userBars[idx] = val;
+                renderGame2Stage(GameEngine.g2Challenges[GameEngine.qIndex]);
+            }
+        }
+
+        function submitG13Answer(chosen, correct) {
+            clearInterval(GameEngine.timerId);
+            const isRight = chosen === correct;
+            handleGameAnswerResult(isRight, isRight ? 'Tepuk tangan! Jawabanmu sangat tepat!' : 'Ups! Jawaban kurang tepat, perhatikan lagi tingginya ya!');
+        }
+
+        function submitG2Answer() {
+            clearInterval(GameEngine.timerId);
+            const targets = GameEngine.g2Challenges[GameEngine.qIndex].targets.map(t => t.target);
+            const isRight = targets.every((val, i) => val === GameEngine.userBars[i]);
+            handleGameAnswerResult(isRight, isRight ? 'Hebat sekali! Tinggi semua batang tepat!' : 'Belum pas tingginya, ayo coba lebih teliti di tantangan berikutnya!');
+        }
+
+        function handleGameAnswerResult(isRight, msg) {
+            const fb = document.getElementById('game-inline-fb');
+            if (isRight) {
+                AudioEngine.correct();
+                GameEngine.score += 20;
+                document.getElementById('game-current-score').textContent = GameEngine.score;
+                if (fb) fb.innerHTML = `<div class="p-3 bg-emerald-100 text-emerald-800 rounded-xl font-bold mt-2">👏 ${msg} (+20 Poin)</div>`;
+            } else {
+                AudioEngine.wrong();
+                if (fb) fb.innerHTML = `<div class="p-3 bg-rose-100 text-rose-800 rounded-xl font-bold mt-2">😜 ${msg}</div>`;
+            }
+
+            setTimeout(() => {
+                GameEngine.qIndex++;
+                loadGameChallenge();
+            }, 1500);
+        }
+
+        function finishGame() {
+            clearInterval(GameEngine.timerId);
+            AudioEngine.victory();
+            AppState.totalGameScore += GameEngine.score;
+            saveProgress();
+
+            const starsEarned = GameEngine.score >= 80 ? 3 : (GameEngine.score >= 40 ? 2 : 1);
+            awardStar(`game_${GameEngine.activeGame}_done`, starsEarned, `Menyelesaikan Game ${GameEngine.activeGame} dengan skor ${GameEngine.score}!`);
+
+            const stage = document.getElementById('game-stage-content');
+            stage.innerHTML = `
+                <div class="text-center py-6 space-y-4 animate-pop">
+                    <div class="text-6xl">🏆</div>
+                    <h4 class="text-3xl font-display font-bold text-purple-700">Tantangan Selesai!</h4>
+                    <p class="text-xl font-bold text-slate-700">Skor Akhir Kamu: <span class="text-orange-500 text-3xl">${GameEngine.score} / 100</span></p>
+                    <p class="text-base font-semibold text-emerald-700 bg-emerald-50 max-w-md mx-auto p-3 rounded-2xl border border-emerald-200">
+                        "Terus berlatih membaca data ya! Kamu semakin mahir menjadi Ahli Data seperti Didi!"
+                    </p>
+                    <div class="flex justify-center gap-3 pt-2">
+                        <button onclick="startGame(${GameEngine.activeGame})" class="btn-3d bg-orange-500 text-white font-display font-bold px-6 py-3 rounded-2xl">
+                            🔄 Bermain Kembali
+                        </button>
+                        <button onclick="exitGame()" class="btn-3d bg-sky-100 text-sky-700 font-display font-bold px-6 py-3 rounded-2xl">
+                            🎮 Pilih Game Lain
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* =====================================================================
+           8. MENU 5: LKPD DIGITAL INTERAKTIF & CETAK
+        ====================================================================== */
+        let lkpdBars = [
+            { name: 'Pensil', emoji: '✏️', val: 0, color: 'bg-amber-400' },
+            { name: 'Pulpen', emoji: '🖊️', val: 0, color: 'bg-sky-500' },
+            { name: 'Penggaris', emoji: '📏', val: 0, color: 'bg-emerald-500' },
+            { name: 'Penghapus', emoji: '🧽', val: 0, color: 'bg-rose-400' }
+        ];
+
+        function initLKPD() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('lkpd-tanggal').value = today;
+            renderLKPDBars();
+        }
+
+        function renderLKPDBars() {
+            const barsEl = document.getElementById('lkpd-bars-container');
+            const ctrlEl = document.getElementById('lkpd-bar-controls');
+            barsEl.innerHTML = '';
+            ctrlEl.innerHTML = '';
+
+            lkpdBars.forEach((b, i) => {
+                barsEl.innerHTML += `
+                    <div class="flex flex-col items-center justify-end h-full w-16">
+                        <span class="font-bold text-xs mb-1">${b.val}</span>
+                        <div class="w-10 ${b.color} rounded-t-lg bar-grow" style="height: ${(b.val / 10) * 100}%"></div>
+                        <span class="text-[11px] font-bold mt-1">${b.emoji} ${b.name}</span>
+                    </div>
+                `;
+                ctrlEl.innerHTML += `
+                    <div class="flex justify-center gap-1">
+                        <button onclick="adjustLKPDBar(${i}, -1)" class="btn-3d bg-rose-100 text-rose-700 w-7 h-7 rounded-lg font-bold text-sm">-</button>
+                        <button onclick="adjustLKPDBar(${i}, 1)" class="btn-3d bg-emerald-100 text-emerald-700 w-7 h-7 rounded-lg font-bold text-sm">+</button>
+                    </div>
+                `;
+            });
+        }
+
+        function adjustLKPDBar(idx, delta) {
+            playClick();
+            const next = lkpdBars[idx].val + delta;
+            if (next >= 0 && next <= 10) {
+                lkpdBars[idx].val = next;
+                renderLKPDBars();
+            }
+        }
+
+        function checkLKPD() {
+            const nama = document.getElementById('lkpd-nama').value.trim();
+            if (!nama) {
+                AudioEngine.wrong();
+                showToast('Isi Namamu Dulu!', 'Silakan ketik nama lengkapmu pada kolom identitas LKPD.', '📝');
+                return;
+            }
+
+            let score = 0;
+            // Cek Tabel (Pensil=9, Pulpen=6, Penggaris=4, Penghapus=7)
+            if (parseInt(document.getElementById('lkpd-t-pensil').value) === 9) score += 10;
+            if (parseInt(document.getElementById('lkpd-t-pulpen').value) === 6) score += 10;
+            if (parseInt(document.getElementById('lkpd-t-penggaris').value) === 4) score += 10;
+            if (parseInt(document.getElementById('lkpd-t-penghapus').value) === 7) score += 10;
+
+            // Cek Batang
+            const targetBars = [9, 6, 4, 7];
+            targetBars.forEach((t, i) => {
+                if (lkpdBars[i].val === t) score += 5;
+            });
+
+            // Cek Pertanyaan Terbuka & Tertutup
+            const q1 = document.getElementById('lkpd-q1').value.toLowerCase();
+            const q2 = document.getElementById('lkpd-q2').value.toLowerCase();
+            const q3 = parseInt(document.getElementById('lkpd-q3').value);
+            const q4 = parseInt(document.getElementById('lkpd-q4').value);
+            const kesimpulan = document.getElementById('lkpd-kesimpulan').value.trim();
+
+            if (q1.includes('pensil')) score += 10;
+            if (q2.includes('penggaris')) score += 10;
+            if (q3 === 26) score += 10;
+            if (q4 === 5) score += 10;
+            // Kesimpulan terbuka: dinilai berdasarkan kelengkapan kalimat bermakna
+            if (kesimpulan.length >= 10) score += 20;
+
+            const resBox = document.getElementById('lkpd-result-box');
+            resBox.classList.remove('hidden');
+            resBox.innerHTML = `Nilai LKPD <strong>${nama}</strong>: <span class="text-2xl text-emerald-600">${score} / 100</span>`;
+
+            if (score >= 70) {
+                AudioEngine.correct();
+                awardStar('lkpd_done', 3, `LKPD ${nama} selesai dengan nilai ${score}!`);
+            } else {
+                AudioEngine.wrong();
+                showToast('Ayo Perbaiki Lagi!', 'Periksa kembali angka pada tabel, batang diagram, dan kesimpulanmu.', '💡');
+            }
+        }
+
+        function printLKPD() {
+            playClick();
+            window.print();
+        }
+
+        /* =====================================================================
+           9. MENU 6: EVALUASI (10 PILIHAN GANDA + 5 ISIAN SINGKAT, ACAK, 30 DETIK)
+        ====================================================================== */
+        const EvalBank = [
+            // 10 Soal Pilihan Ganda
+            {
+                type: 'pg',
+                q: 'Penyajian data dalam bentuk gambar atau batang agar lebih mudah dibaca dan dipahami disebut...',
+                opts: ['Diagram', 'Dongeng', 'Puisi', 'Peta Buta'],
+                ans: 'Diagram',
+                exp: 'Diagram adalah penyajian data menggunakan gambar, simbol, atau batang agar informasi mudah dipahami.'
+            },
+            {
+                type: 'pg',
+                q: 'Salah satu kegunaan utama diagram adalah untuk...',
+                opts: ['Membuat data sulit dihitung', 'Membandingkan jumlah data dengan cepat', 'Menghapus catatan siswa', 'Menyembunyikan informasi'],
+                ans: 'Membandingkan jumlah data dengan cepat',
+                exp: 'Dengan diagram, kita dapat langsung membandingkan kategori mana yang paling banyak atau paling sedikit.'
+            },
+            {
+                type: 'pg',
+                q: 'Diagram yang menyajikan data menggunakan simbol-simbol gambar disebut...',
+                opts: ['Diagram Lingkaran', 'Diagram Gambar (Piktogram)', 'Diagram Garis', 'Diagram Pohon'],
+                ans: 'Diagram Gambar (Piktogram)',
+                exp: 'Diagram gambar disebut juga piktogram karena menggunakan ikon atau gambar untuk mewakili jumlah data.'
+            },
+            {
+                type: 'pg',
+                visual: 'Piktogram Panen Jeruk: Senin = 🍊🍊🍊 | Selasa = 🍊🍊🍊🍊🍊 (Keterangan: 1 gambar 🍊 = 2 kg)',
+                q: 'Berdasarkan piktogram di atas, berapa kilogram jeruk yang dipanen pada hari Selasa?',
+                opts: ['5 kg', '10 kg', '8 kg', '6 kg'],
+                ans: '10 kg',
+                exp: 'Pada hari Selasa ada 5 gambar jeruk. Karena 1 gambar = 2 kg, maka 5 × 2 kg = 10 kg.'
+            },
+            {
+                type: 'pg',
+                visual: 'Data Olahraga Siswa: Sepak Bola = 10 siswa | Renang = 6 siswa | Bulu Tangkis = 8 siswa',
+                q: 'Jika dibuat diagram batang, batang yang paling tinggi adalah olahraga...',
+                opts: ['Sepak Bola', 'Renang', 'Bulu Tangkis', 'Semua sama tinggi'],
+                ans: 'Sepak Bola',
+                exp: 'Sepak Bola memiliki peminat terbanyak (10 siswa), sehingga batangnya paling tinggi.'
+            },
+            {
+                type: 'pg',
+                q: 'Bagian diagram yang terletak di paling atas dan menjelaskan isi keseluruhan data adalah...',
+                opts: ['Skala', 'Judul Diagram', 'Sumbu Mendatar', 'Garis Tepi'],
+                ans: 'Judul Diagram',
+                exp: 'Judul diagram berada di atas dan memberitahu pembaca tentang topik data yang disajikan.'
+            },
+            {
+                type: 'pg',
+                visual: 'Data Warna Kesukaan: Merah = 7 siswa, Biru = 9 siswa, Hijau = 4 siswa',
+                q: 'Berapa jumlah keseluruhan siswa yang didata pada informasi di atas?',
+                opts: ['16 siswa', '19 siswa', '20 siswa', '21 siswa'],
+                ans: '20 siswa',
+                exp: 'Jumlah keseluruhan = 7 + 9 + 4 = 20 siswa.'
+            },
+            {
+                type: 'pg',
+                visual: 'Data Pengunjung Perpustakaan: Senin = 12 anak, Rabu = 7 anak',
+                q: 'Berapa selisih pengunjung perpustakaan pada hari Senin dan Rabu?',
+                opts: ['4 anak', '5 anak', '6 anak', '19 anak'],
+                ans: '5 anak',
+                exp: 'Selisih dicari dengan mengurangkan jumlah terbesar dengan terkecil: 12 - 7 = 5 anak.'
+            },
+            {
+                type: 'pg',
+                q: 'Pada diagram batang tegak, garis mendatar biasanya digunakan untuk menuliskan...',
+                opts: ['Nama kategori data', 'Judul buku cerita', 'Nomor halaman', 'Tanggal lahir'],
+                ans: 'Nama kategori data',
+                exp: 'Sumbu mendatar (horizontal) memuat kategori data, sedangkan sumbu tegak memuat angka/frekuensi.'
+            },
+            {
+                type: 'pg',
+                visual: 'Data Buah Favorit Kelas IV: Mangga = 8, Pisang = 6, Apel = 5, Jeruk = 4, Semangka = 3',
+                q: 'Kesimpulan yang benar berdasarkan data di atas adalah...',
+                opts: ['Semangka adalah buah yang paling disukai', 'Mangga lebih banyak disukai daripada Pisang', 'Apel lebih disukai daripada Mangga', 'Semua buah disukai sama banyak'],
+                ans: 'Mangga lebih banyak disukai daripada Pisang',
+                exp: 'Penggemar Mangga (8 siswa) lebih banyak dibandingkan penggemar Pisang (6 siswa).'
+            },
+
+            // 5 Soal Isian Singkat
+            {
+                type: 'isian',
+                visual: 'Data Hewan di Peternakan: Sapi = 6 ekor, Kambing = 9 ekor, Ayam = 12 ekor',
+                q: 'Hewan yang jumlahnya paling banyak di peternakan tersebut adalah...',
+                validAnswers: ['ayam', 'hewan ayam', 'ekor ayam'],
+                displayAns: 'Ayam',
+                exp: 'Ayam berjumlah 12 ekor, paling banyak dibandingkan Sapi (6) dan Kambing (9).'
+            },
+            {
+                type: 'isian',
+                visual: 'Data Hewan di Peternakan: Sapi = 6 ekor, Kambing = 9 ekor, Ayam = 12 ekor',
+                q: 'Berapa selisih banyak Ayam dan Sapi? (Tulis angkanya saja)',
+                validAnswers: ['6', 'enam', '6 ekor'],
+                displayAns: '6',
+                exp: 'Selisih Ayam dan Sapi = 12 - 6 = 6 ekor.'
+            },
+            {
+                type: 'isian',
+                visual: 'Data Mainan Didi: Bola = 4, Mobil = 5, Robot = 3',
+                q: 'Berapa jumlah seluruh mainan yang dimiliki Didi? (Tulis angkanya saja)',
+                validAnswers: ['12', 'dua belas', '12 mainan'],
+                displayAns: '12',
+                exp: 'Jumlah seluruh mainan = 4 + 5 + 3 = 12 mainan.'
+            },
+            {
+                type: 'isian',
+                q: 'Diagram yang menyajikan data menggunakan batang persegi panjang disebut diagram...',
+                validAnswers: ['batang', 'diagram batang'],
+                displayAns: 'Batang',
+                exp: 'Diagram yang berbentuk batang-batang persegi panjang disebut diagram batang.'
+            },
+            {
+                type: 'isian',
+                visual: 'Piktogram Buku: Ani = 📘📘📘 | Budi = 📘📘 (1 gambar 📘 = 3 buku)',
+                q: 'Berapa banyak buku yang dimiliki Budi? (Tulis angkanya saja)',
+                validAnswers: ['6', 'enam', '6 buku'],
+                displayAns: '6',
+                exp: 'Budi memiliki 2 gambar buku. Karena 1 gambar = 3 buku, maka 2 × 3 = 6 buku.'
+            }
+        ];
+
+        const EvalState = {
+            questions: [],
+            currentIdx: 0,
+            correctCount: 0,
+            timer: 30,
+            timerId: null,
+            answered: false,
+            studentName: ''
+        };
+
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function startEvaluasi() {
+            playClick();
+            const nameInput = document.getElementById('eval-student-name').value.trim();
+            EvalState.studentName = nameInput || 'Siswa Kelas IV';
+            EvalState.questions = shuffleArray(EvalBank);
+            EvalState.currentIdx = 0;
+            EvalState.correctCount = 0;
+
+            document.getElementById('eval-start-card').classList.add('hidden');
+            document.getElementById('eval-result-card').classList.add('hidden');
+            document.getElementById('eval-quiz-card').classList.remove('hidden');
+
+            renderEvalQuestion();
+        }
+
+        function startEvalTimer() {
+            clearInterval(EvalState.timerId);
+            EvalState.timer = 30;
+            const tEl = document.getElementById('eval-timer');
+            tEl.textContent = `⏱️ ${EvalState.timer} detik`;
+
+            EvalState.timerId = setInterval(() => {
+                EvalState.timer--;
+                tEl.textContent = `⏱️ ${EvalState.timer} detik`;
+                if (EvalState.timer <= 0) {
+                    clearInterval(EvalState.timerId);
+                    if (!EvalState.answered) {
+                        AudioEngine.timeout();
+                        showEvalExplanation(false, 'Waktu habis untuk soal ini!');
+                    }
+                }
+            }, 1000);
+        }
+
+        function renderEvalQuestion() {
+            EvalState.answered = false;
+            const item = EvalState.questions[EvalState.currentIdx];
+
+            document.getElementById('eval-q-badge').textContent = `Soal ${EvalState.currentIdx + 1} / ${EvalState.questions.length}`;
+            document.getElementById('eval-type-badge').textContent = item.type === 'pg' ? 'Pilihan Ganda' : 'Isian Singkat';
+            document.getElementById('eval-question-text').textContent = item.q;
+
+            const visEl = document.getElementById('eval-visual-area');
+            if (item.visual) {
+                visEl.classList.remove('hidden');
+                visEl.innerHTML = `<p class="font-bold text-center text-sky-900 text-sm md:text-base">📊 ${item.visual}</p>`;
+            } else {
+                visEl.classList.add('hidden');
+            }
+
+            const ansArea = document.getElementById('eval-answer-area');
+            document.getElementById('eval-explanation-box').classList.add('hidden');
+
+            if (item.type === 'pg') {
+                const shuffledOpts = shuffleArray(item.opts);
+                ansArea.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        ${shuffledOpts.map((opt, idx) => `
+                            <button onclick="checkEvalPG('${opt.replace(/'/g, "\\'")}')" class="eval-opt-btn btn-3d bg-white hover:bg-sky-50 border-2 border-sky-300 p-4 rounded-2xl text-left font-bold text-slate-800">
+                                ${String.fromCharCode(65 + idx)}. ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            } else {
+                ansArea.innerHTML = `
+                    <div class="flex flex-col sm:flex-row gap-3 max-w-lg">
+                        <input type="text" id="eval-isian-input" placeholder="Ketik jawaban singkatmu di sini..." class="flex-1 p-3.5 rounded-2xl border-2 border-sky-300 font-bold text-lg focus:outline-none focus:border-orange-500">
+                        <button onclick="checkEvalIsian()" class="btn-3d bg-orange-500 hover:bg-orange-600 text-white font-display font-bold px-6 py-3.5 rounded-2xl">
+                            Kirim Jawaban
+                        </button>
+                    </div>
+                `;
+            }
+
+            startEvalTimer();
+        }
+
+        function checkEvalPG(chosenOpt) {
+            if (EvalState.answered) return;
+            EvalState.answered = true;
+            clearInterval(EvalState.timerId);
+
+            const item = EvalState.questions[EvalState.currentIdx];
+            const isCorrect = chosenOpt === item.ans;
+            if (isCorrect) {
+                EvalState.correctCount++;
+                AudioEngine.correct();
+            } else {
+                AudioEngine.wrong();
+            }
+            showEvalExplanation(isCorrect, isCorrect ? 'Jawabanmu Benar!' : `Kurang Tepat. Kunci jawaban: ${item.ans}`);
+        }
+
+        function checkEvalIsian() {
+            if (EvalState.answered) return;
+            const rawVal = document.getElementById('eval-isian-input').value.trim().toLowerCase();
+            if (!rawVal) {
+                showToast('Kosong!', 'Ketik jawabanmu terlebih dahulu sebelum mengirim.', '✍️');
+                return;
+            }
+            EvalState.answered = true;
+            clearInterval(EvalState.timerId);
+
+            const item = EvalState.questions[EvalState.currentIdx];
+            // Validasi variasi penulisan wajar
+            const normalized = rawVal.replace(/\s+/g, ' ');
+            const isCorrect = item.validAnswers.some(v => normalized === v || normalized.includes(v));
+
+            if (isCorrect) {
+                EvalState.correctCount++;
+                AudioEngine.correct();
+            } else {
+                AudioEngine.wrong();
+            }
+            showEvalExplanation(isCorrect, isCorrect ? 'Jawaban Isian Benar!' : `Belum Tepat. Kunci jawaban: ${item.displayAns}`);
+        }
+
+        function showEvalExplanation(isCorrect, statusTitle) {
+            const item = EvalState.questions[EvalState.currentIdx];
+            const box = document.getElementById('eval-explanation-box');
+            box.classList.remove('hidden');
+            box.className = isCorrect
+                ? 'rounded-2xl p-5 border-2 space-y-2 animate-pop bg-emerald-50 border-emerald-400 text-emerald-900'
+                : 'rounded-2xl p-5 border-2 space-y-2 animate-pop bg-rose-50 border-rose-400 text-rose-900';
+
+            document.getElementById('eval-exp-title').textContent = isCorrect ? `🎉 ${statusTitle}` : `💡 ${statusTitle}`;
+            document.getElementById('eval-exp-text').textContent = `Pembahasan: ${item.exp}`;
+        }
+
+        function nextEvalQuestion() {
+            playClick();
+            EvalState.currentIdx++;
+            if (EvalState.currentIdx < EvalState.questions.length) {
+                renderEvalQuestion();
+            } else {
+                finishEvaluasi();
+            }
+        }
+
+        function finishEvaluasi() {
+            clearInterval(EvalState.timerId);
+            AudioEngine.victory();
+            document.getElementById('eval-quiz-card').classList.add('hidden');
+            document.getElementById('eval-result-card').classList.remove('hidden');
+
+            const finalScore = Math.round((EvalState.correctCount / EvalState.questions.length) * 100);
+            let predikat = 'Perlu Bimbingan (D)';
+            if (finalScore >= 90) predikat = 'Sangat Baik / Istimewa (A)';
+            else if (finalScore >= 75) predikat = 'Baik Sekali (B)';
+            else if (finalScore >= 60) predikat = 'Cukup Baik (C)';
+
+            document.getElementById('eval-res-name').textContent = EvalState.studentName;
+            document.getElementById('eval-final-score').textContent = finalScore;
+            document.getElementById('eval-predikat').textContent = predikat;
+            document.getElementById('eval-res-summary').textContent = `Kamu menjawab benar ${EvalState.correctCount} dari ${EvalState.questions.length} soal evaluasi!`;
+
+            const starsEarned = finalScore >= 80 ? 5 : (finalScore >= 60 ? 3 : 1);
+            awardStar('evaluasi_done', starsEarned, `Menyelesaikan Evaluasi Akhir dengan nilai ${finalScore}!`);
+        }
+
+        /* =====================================================================
+           10. INISIALISASI SAAT HALAMAN DIMUAT
+        ====================================================================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+            selectMateriStep(0);
+            renderSimulasi();
+            renderPraktikum();
+            initLKPD();
+            // Muat daftar suara TTS browser lebih awal
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.getVoices();
+            }
+        });
+    </script>
+</body>
+</html>
